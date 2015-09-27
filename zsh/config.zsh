@@ -7,6 +7,8 @@ fi
 export LSCOLORS="exfxcxdxbxegedabagacad"
 export CLICOLOR=true
 
+set ZSH_THEME='agnoster'
+
 fpath=($ZSH/functions $fpath)
 
 autoload -U $ZSH/functions/*(:t)
