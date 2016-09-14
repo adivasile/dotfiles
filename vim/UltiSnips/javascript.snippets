@@ -1,0 +1,105 @@
+snippet comp "Basic compoent"
+import React from 'react';
+import autoBind from 'react-autobind';
+
+class $1 extends React.Component {
+	constructor(props) {
+		super(props);
+
+		autoBind(this);
+	}
+
+	render() {
+		return (
+			<div>
+				Content goes here
+			</div>
+		)
+	}
+}
+
+export default $1;
+endsnippet
+
+
+snippet scomp "Stateless Component"
+const $1 = props => {
+  return (
+    <div></div>
+  );
+}
+endsnippet
+
+snippet escomp "Export Stateless Component"
+import React from 'react';
+
+const $1 = props => {
+  return (
+    <div></div>
+  );
+}
+
+export default $1;
+endsnippet
+
+snippet desp "Destructure props"
+const { $1 } = this.props;
+endsnippet
+
+snippet dest "Destructure state"
+const { $1 } = this.state;
+endsnippet
+
+snippet desc "Destructure context"
+const { $1 } = this.context;
+endsnippet
+
+snippet ief "Inner event handler"
+return e => {	
+  $1
+}
+endsnippet
+
+snippet thu "Thunk" b
+return (dispatch, getState) => {
+  $1	
+}
+endsnippet
+
+snippet task "Task Monad"
+new Task((reject, resolve) => {
+	$1
+});
+endsnippet
+
+snippet mdb "Map debugger" b
+.map(e => { debugger })
+endsnippet
+
+snippet rmdb "Rejected Map debugger" b
+.rejectedMap(e => { debugger })
+endsnippet
+
+snippet dbf "Fn with debugger for compose" b
+e => { debugger },
+endsnippet
+
+snippet sim "Import component from shared" b
+import $1 from 'components/shared/$1.js';
+endsnippet
+
+snippet cim "Import component" b
+import $1 from 'components$2/$1.js';
+endsnippet
+
+snippet exc "Export const" b
+export const 
+endsnippet
+
+snippet exd "Export default" b
+export default 
+endsnippet
+
+snippet pt "Prop type" b
+$1: React.PropTypes.$2
+endsnippet

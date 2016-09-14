@@ -1,2 +1,1 @@
-export EDITOR='vim'
 export SCALA_HOME='/usr/local/opt/scala/idea'

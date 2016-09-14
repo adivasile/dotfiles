@@ -1,7 +1,9 @@
+filetype off
+set runtimepath+=~/.dotfiles/vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Bundles
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set rtp+=~/.nvim/bundle/Vundle.vim/
+set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 
 Plugin 'gmarik/vundle'
@@ -14,17 +16,25 @@ Plugin 'tpope/vim-commentary.git'
 Plugin 'kien/ctrlp.vim.git'
 Plugin 'altercation/vim-colors-solarized.git'
 Plugin 'Townk/vim-autoclose.git' 
-Plugin 'kchmck/vim-coffee-script.git'
 Plugin 'godlygeek/tabular.git'
 Plugin 'mustache/vim-mustache-handlebars.git'
 Plugin 'https://github.com/tclem/vim-arduino.git'
 Plugin 'https://github.com/tpope/vim-unimpaired.git'
 Plugin 'https://github.com/rking/ag.vim'
-Plugin 'https://github.com/mxw/vim-jsx'
 Plugin 'https://github.com/leafgarland/typescript-vim'
+Plugin 'https://github.com/lambdatoast/elm.vim'
+Plugin 'https://github.com/pangloss/vim-javascript'
+Plugin 'https://github.com/mxw/vim-jsx'
+Plugin 'https://github.com/isRuslan/vim-es6'
+Plugin 'https://github.com/scrooloose/syntastic.git'
 " Plugin 'https://github.com/Valloric/YouCompleteMe'
-" Plugin 'SirVer/ultisnips'
-" Plugin 'honza/vim-snippets'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'Shougo/deoplete.nvim'
+
+
+let g:python3_host_prog = '/usr/local/bin/python3'
+let g:deoplete#enable_at_startup = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -34,8 +44,7 @@ set nocompatible
 set history=1000
 
 " Enable filetype plugin
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -110,11 +119,11 @@ else
 endif
 
 set t_Co=256
-let g:solarized_termcolors=256
-let g:solarized_termtrans = 1
+" let g:solarized_termcolors=256
+" let g:solarized_termtrans = 1
 colorscheme solarized 
 
-set encoding=utf8
+" set encoding=utf8
 try
     lang en_US
 catch
@@ -260,22 +269,20 @@ let g:ctrlp_custom_ignore = '\v[\/](git|hg|svn|node_modules|dist)$'
 let g:mustache_abbreviations = 1
 
 
-
-
 " """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " " MULTIPURPOSE TAB KEY
-" " " Indent if we're at the beginning of a line. Else, do completion.
-" " """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" function! InsertTabWrapper()
-"     let col = col('.') - 1
-"     if !col || getline('.')[col - 1] !~ '\k'
-"         return "\<tab>"
-"     else
-"         return "\<c-p>"
-"     endif
-" endfunction
-" inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-" inoremap <s-tab> <c-n>
+" " Indent if we're at the beginning of a line. Else, do completion.
+" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <s-tab> <c-n>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FILE NAVIGATION STUFF
@@ -309,9 +316,12 @@ map <leader>p "*p
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<c-m>"
+let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+let g:UltiSnipsSnippetsDir="/Users/adrianvasile/.dotfiles/vim/UltiSnips"
+
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
@@ -332,6 +342,28 @@ vnoremap <leader>a> :Tab/=>\zs<CR>
 
 map <leader>sp ysiw)
 map <leader>s' ysiw'
+map <leader>s` ysiw`
+map <leader>c' cs"'
+
+let g:python_host_prog = '/usr/bin/python'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" SYNTASTIC
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_javascript_checkers = ['eslint']
+
+let g:syntastic_javascript_checkers = ["eslint"]
+let g:syntastic_javascript_eslint_exec = 'eslint_d'
 
 
 autocmd QuickFixCmdPost [^l]* nested cwindow
