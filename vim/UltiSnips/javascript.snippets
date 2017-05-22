@@ -1,4 +1,5 @@
 snippet comp "Basic compoent"
+/* eslint react/prop-types: 0 */
 import React from 'react';
 import autoBind from 'react-autobind';
 
@@ -28,6 +29,10 @@ const $1 = props => {
     <div></div>
   );
 }
+endsnippet
+
+snippet cl "Console.log"
+console.log($1)
 endsnippet
 
 snippet escomp "Export Stateless Component"
@@ -88,9 +93,18 @@ snippet sim "Import component from shared" b
 import $1 from 'components/shared/$1.js';
 endsnippet
 
+snippet lim "Import component from lib" b
+import $1 from 'lib/components/$1.js';
+endsnippet
+
 snippet cim "Import component" b
 import $1 from 'components$2/$1.js';
 endsnippet
+
+snippet coim "Import Container" b
+import $1Container from 'containers/$1Container.js';
+endsnippet
+
 
 snippet exc "Export const" b
 export const 
