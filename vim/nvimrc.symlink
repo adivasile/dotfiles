@@ -27,7 +27,8 @@ Plugin 'https://github.com/pangloss/vim-javascript'
 Plugin 'https://github.com/mxw/vim-jsx'
 Plugin 'https://github.com/isRuslan/vim-es6'
 Plugin 'https://github.com/scrooloose/syntastic.git'
-" Plugin 'https://github.com/Valloric/YouCompleteMe'
+Plugin 'ervandew/supertab'
+Plugin 'https://github.com/Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'Shougo/deoplete.nvim'
@@ -43,11 +44,20 @@ set nocompatible
 " Sets how many lines of history VIM has to remember
 set history=1000
 
+autocmd VimResized * wincmd =
+
 " Enable filetype plugin
 filetype plugin indent on
 
 " Set to auto read when a file is changed from the outside
 set autoread
+set relativenumber
+
+" augroup autoSaveAndRead
+"     autocmd!
+"     autocmd TextChanged,InsertLeave,FocusLost * silent! wall
+"     autocmd CursorHold * silent! checktime
+" augroup END
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
@@ -88,7 +98,7 @@ set smartcase
 set hlsearch "Highlight search things
 set incsearch "Make search act like search in modern browsers
 
-set nu " line numbers are cool
+" set nu " line numbers are cool
 
 set showmatch "Show matching bracets when text indicator is over them
 set mat=2 "How many tenths of a second to blink
@@ -310,12 +320,19 @@ function! ShowRoutes()
 endfunction
 map <leader>y "*y
 map <leader>p "*p
+map <leader>s :sp<cr>
+map <leader>v :vs<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " UltiSnips
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+"
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
@@ -354,16 +371,20 @@ let g:python_host_prog = '/usr/bin/python'
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
-" let g:syntastic_javascript_checkers = ['eslint']
-" let g:syntastic_javascript_checkers = ['eslint']
-
 let g:syntastic_javascript_checkers = ["eslint"]
 let g:syntastic_javascript_eslint_exec = 'eslint_d'
+let g:syntastic_auto_loc_list = 0
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_checkers = ['eslint']
+
+" Autofix entire buffer with eslint_d:
+nnoremap <leader>ff mF:%!eslint_d --stdin --fix-to-stdout<CR>`F
+" Autofix visual selection with eslint_d:
+vnoremap <leader>f :!eslint_d --stdin --fix-to-stdout<CR>gv
 
 
 autocmd QuickFixCmdPost [^l]* nested cwindow
