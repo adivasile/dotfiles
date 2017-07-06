@@ -1,6 +1,9 @@
 # Set a Ctrl-b shortcut for reloading your tmux config
 bind r source-file ~/.tmux.conf
 
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'christoomey/vim-tmux-navigator'
 
 # Rename your terminals
 set -g set-titles on
@@ -43,3 +46,5 @@ unbind '"'
 unbind %
 
 set -g mouse on
+
+run '~/.tmux/plugins/tpm/tpm'

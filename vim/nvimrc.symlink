@@ -32,10 +32,15 @@ Plugin 'https://github.com/Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'Shougo/deoplete.nvim'
+Plugin 'chemzqm/vim-jsx-improve'
+Plugin 'cakebaker/scss-syntax.vim'
+Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plugin 'christoomey/vim-tmux-navigator'
 
 
 let g:python3_host_prog = '/usr/local/bin/python3'
 let g:deoplete#enable_at_startup = 1
+au BufRead,BufNewFile *.scss set filetype=scss.css
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -110,6 +115,11 @@ set t_vb=
 set tm=500
 
 set nolazyredraw
+
+
+inoremap {<cr> {<cr>}<c-o>O
+inoremap [<cr> [<cr>]<c-o>O
+inoremap (<cr> (<cr>)<c-o>O
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -382,9 +392,9 @@ let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_checkers = ['eslint']
 
 " Autofix entire buffer with eslint_d:
-nnoremap <leader>ff mF:%!eslint_d --stdin --fix-to-stdout<CR>`F
+nnoremap <leader>t mF:%!eslint_d --stdin --fix-to-stdout<CR>`F
 " Autofix visual selection with eslint_d:
-vnoremap <leader>f :!eslint_d --stdin --fix-to-stdout<CR>gv
+vnoremap <leader>t :!eslint_d --stdin --fix-to-stdout<CR>gv
 
 
 autocmd QuickFixCmdPost [^l]* nested cwindow
