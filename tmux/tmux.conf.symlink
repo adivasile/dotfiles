@@ -4,6 +4,8 @@ bind r source-file ~/.tmux.conf
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'christoomey/vim-tmux-navigator'
+set -g @plugin 'seebi/tmux-colors-solarized'
+set -g @colors-solarized '256'
 
 # Rename your terminals
 set -g set-titles on
@@ -22,6 +24,12 @@ set -g status-left-length 90
 set -g status-right-length 60
 # set -g status-left "#[fg=Green]#(whoami)#[fg=white]::#[fg=blue] \
 
+# improve colors
+set -g default-terminal "screen-256color"
+
+# # remove administrative debris (session name, hostname, time) in status bar
+# set -g status-left ''
+# set -g status-right ''
 
 
 # (hostname - s)#[fg=white]::##[fg=yellow]#(curl ipecho.net/plain;echo)"

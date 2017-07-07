@@ -7,7 +7,7 @@ fi
 export LSCOLORS="exfxcxdxbxegedabagacad"
 export CLICOLOR=true
 
-set ZSH_THEME='agnoster'
+set ZSH_THEME="powerlevel9k/powerlevel9k"
 
 fpath=($ZSH/functions $fpath)
 
