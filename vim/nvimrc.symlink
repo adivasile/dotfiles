@@ -15,27 +15,25 @@ Plugin 'tpope/vim-repeat.git'
 Plugin 'tpope/vim-commentary.git'
 Plugin 'kien/ctrlp.vim.git'
 Plugin 'altercation/vim-colors-solarized.git'
-Plugin 'Townk/vim-autoclose.git' 
-Plugin 'godlygeek/tabular.git'
-Plugin 'mustache/vim-mustache-handlebars.git'
-Plugin 'https://github.com/tclem/vim-arduino.git'
-Plugin 'https://github.com/tpope/vim-unimpaired.git'
+Plugin 'jiangmiao/auto-pairs'
 Plugin 'https://github.com/rking/ag.vim'
-Plugin 'https://github.com/leafgarland/typescript-vim'
-Plugin 'https://github.com/lambdatoast/elm.vim'
 Plugin 'https://github.com/pangloss/vim-javascript'
 Plugin 'https://github.com/mxw/vim-jsx'
 Plugin 'https://github.com/isRuslan/vim-es6'
 Plugin 'https://github.com/scrooloose/syntastic.git'
 Plugin 'ervandew/supertab'
-Plugin 'https://github.com/Valloric/YouCompleteMe'
+" Plugin 'https://github.com/Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'Shougo/deoplete.nvim'
 Plugin 'chemzqm/vim-jsx-improve'
 Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plugin 'FelikZ/ctrlp-py-matcher'
+Plugin 'bling/vim-airline'
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'alvan/vim-closetag'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'sjl/gundo.vim'
 
 
 let g:python3_host_prog = '/usr/local/bin/python3'
@@ -56,7 +54,7 @@ filetype plugin indent on
 
 " Set to auto read when a file is changed from the outside
 set autoread
-set relativenumber
+set number
 
 " augroup autoSaveAndRead
 "     autocmd!
@@ -88,7 +86,7 @@ set wildmenu "Turn on WiLd menu
 set wildmode=longest,list
 set scrolloff=3
 
-set cmdheight=2 "The commandbar height
+set cmdheight=1 "The commandbar height
 
 set hid "Change buffer - without saving
 
@@ -138,9 +136,9 @@ else
   set background=dark
 endif
 
-set t_Co=256
+" set t_Co=256
 " let g:solarized_termtrans = 1
-let g:solarized_termcolors=256
+" let g:solarized_termcolors=256
 colorscheme solarized 
 
 " set encoding=utf8
@@ -150,7 +148,7 @@ catch
 endtry
 
 set ffs=unix,dos,mac "Default file types
-
+nnoremap <leader>u :GundoToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -199,6 +197,16 @@ map <left> <nop>
 map <up> <nop>
 map <down> <nop>
 
+" move to beginning/end of line
+noremap B ^
+noremap E $
+
+" $/^ doesn't do anything
+noremap $ <nop>
+noremap ^ <nop>
+nnoremap gV `[v`]
+nnoremap <leader>a :Ag
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -234,7 +242,7 @@ nnoremap <silent> <F11> :YRShow<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Quickly open a buffer for scripbble
+"Quickly open a buffer for scribble
 map <leader>q :e ~/buffer<cr>
 au BufRead,BufNewFile ~/buffer iab <buffer> xh1 ===========================================
 inoremap jj <ESC>
@@ -279,8 +287,8 @@ endfunction
 " """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 let g:ctrlp_map = '<leader>f'
-map <leader>fr :CtrlPMRUFiles<cr>
-let g:ctrlp_custom_ignore = '\v[\/](git|hg|svn|node_modules|dist)$'
+let g:ctrlp_custom_ignore = '\v[\/](git|hg|svn|node_modules|dist|target|tmp|log)$'
+let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -408,6 +416,8 @@ nnoremap <leader><leader> <c-^>
 inoremap <% <% %><ESC><left><left>i
 
 nnoremap ,td :Ag TODO --ignore-dir=public --ignore=bootstrap <cr>
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.js'
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
 
 au BufRead,BufNewFile *.pde set filetype=arduino
 au BufRead,BufNewFile *.ino set filetype=arduino

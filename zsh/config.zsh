@@ -7,9 +7,9 @@ fi
 export LSCOLORS="exfxcxdxbxegedabagacad"
 export CLICOLOR=true
 
-set ZSH_THEME="powerlevel9k/powerlevel9k"
-
 fpath=($ZSH/functions $fpath)
+
+plugins=(git bundler osx rake ruby)
 
 
 autoload -U $ZSH/functions/*(:t)
@@ -52,5 +52,7 @@ bindkey '^[[3~' delete-char
 bindkey '^[^N' newtab
 bindkey '^?' backward-delete-char
 
+
+ZSH_THEME="powerlevel9k/powerlevel9k"
 
 # source ~/.iterm2_shell_integration.`basename $SHELL`
