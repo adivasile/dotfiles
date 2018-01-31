@@ -4,3 +4,4 @@ alias hstop="/usr/local/Cellar/hadoop/2.7.3/sbin/stop-yarn.sh;/usr/local/Cellar/
 alias vim=nvim
 alias sshconf='vim ~/.ssh/config'
 alias dotfiles='vim ~/.dotfiles'
+alias ll="ls -alh"

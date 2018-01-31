@@ -1,0 +1,4 @@
+#compdef nt
+_files -W $NOTEBOOKS -/
+
+# See further documentation in `functions/c`.

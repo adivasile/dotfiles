@@ -2,6 +2,7 @@
 export ZSH=$HOME/.dotfiles
 # your project folder that we can `c [tab]` to
 export PROJECTS=~/Code
+export NOTEBOOKS=~/Documents/notebooks
 
 # Stash your environment variables in ~/.localrc. This means they'll stay out
 # of your main dotfiles repository (which may be public, like this one), but
@@ -50,3 +51,15 @@ if [ $ITERM_SESSION_ID ]; then
 fi
 
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# man() {
+#     env \
+#     LESS_TERMCAP_mb="$(printf "\e[1;31m")" \
+#     LESS_TERMCAP_md="$(printf "\e[1;31m")" \
+#     LESS_TERMCAP_me="$(printf "\e[0m")" \
+#     LESS_TERMCAP_se="$(printf "\e[0m")" \
+#     LESS_TERMCAP_so="$(printf "\e[1;44;33m")" \
+#     LESS_TERMCAP_ue="$(printf "\e[0m")" \
+#     LESS_TERMCAP_us="$(printf "\e[1;32m")" \
+#     man "${@}"
+#   }
