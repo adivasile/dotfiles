@@ -14,6 +14,12 @@ set -g set-titles-string '#(whoami)::#h::#(curl ipecho.net/plain;echo)'
 
 set -sg escape-time 0
 
+# Use vim keybindings in copy mode
+setw -g mode-keys vi
+
+if -b "command -v reattach-to-user-namespace > /dev/null 2>&1" \
+    "run 'tmux set -g default-command \"exec $(tmux show -gv default-shell) 2>/dev/null & reattach-to-user-namespace -l $(tmux show -gv default-shell)\"'"
+
 
 # Status bar customization
 # set -g status-utf8 on
@@ -33,7 +39,6 @@ set -g default-terminal "screen-256color"
 
 
 # (hostname - s)#[fg=white]::##[fg=yellow]#(curl ipecho.net/plain;echo)"
-
 
 
 set -g status-justify left

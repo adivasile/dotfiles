@@ -1,11 +1,15 @@
 filetype off
 set runtimepath+=~/.dotfiles/vim
+set path+=client/app
+set path+=frontend/app
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Bundles
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 
+Plugin 'sheerun/vim-polyglot'
+Plugin 'tpope/vim-vinegar'
 Plugin 'gmarik/vundle'
 Plugin 'tpope/vim-rails.git'
 Plugin 'tpope/vim-fugitive.git'
@@ -15,34 +19,44 @@ Plugin 'tpope/vim-repeat.git'
 Plugin 'tpope/vim-commentary.git'
 Plugin 'kien/ctrlp.vim.git'
 Plugin 'altercation/vim-colors-solarized.git'
-Plugin 'jiangmiao/auto-pairs'
+Plugin 'auto-pairs-gentle'
 Plugin 'https://github.com/rking/ag.vim'
-Plugin 'https://github.com/pangloss/vim-javascript'
-Plugin 'https://github.com/mxw/vim-jsx'
-Plugin 'https://github.com/isRuslan/vim-es6'
-Plugin 'https://github.com/scrooloose/syntastic.git'
-Plugin 'ervandew/supertab'
-" Plugin 'https://github.com/Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-Plugin 'Shougo/deoplete.nvim'
-Plugin 'chemzqm/vim-jsx-improve'
-Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'FelikZ/ctrlp-py-matcher'
 Plugin 'bling/vim-airline'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'alvan/vim-closetag'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'sjl/gundo.vim'
+Plugin 'w0rp/ale'
+Plugin 'Shougo/deoplete.nvim'
+
+" Plugin 'https://github.com/pangloss/vim-javascript'
+" " Plugin 'https://github.com/mxw/vim-jsx'
+" Plugin 'chemzqm/vim-jsx-improve'
+" Plugin 'https://github.com/isRuslan/vim-es6'
+" Plugin 'cakebaker/scss-syntax.vim'
 
 
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python3_host_prog = '/usr/local/bin/ipython3'
 let g:deoplete#enable_at_startup = 1
 au BufRead,BufNewFile *.scss set filetype=scss.css
+
+
+" Plugin 'https://github.com/scrooloose/syntastic.git'
+
+Plugin 'ervandew/supertab'
+" Plugin 'https://github.com/Valloric/YouCompleteMe'
+" Plugin 'alvan/vim-closetag'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set nocursorcolumn
+set nocursorline
+syntax sync minlines=256
+set synmaxcol=200
+
 set nocompatible
 " Sets how many lines of history VIM has to remember
 set history=1000
@@ -300,16 +314,16 @@ let g:mustache_abbreviations = 1
 " " MULTIPURPOSE TAB KEY
 " " Indent if we're at the beginning of a line. Else, do completion.
 " """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-p>"
-    endif
-endfunction
-inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <s-tab> <c-n>
+" function! InsertTabWrapper()
+"     let col = col('.') - 1
+"     if !col || getline('.')[col - 1] !~ '\k'
+"         return "\<tab>"
+"     else
+"         return "\<c-p>"
+"     endif
+" endfunction
+" inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+" inoremap <s-tab> <c-n>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FILE NAVIGATION STUFF
@@ -382,36 +396,61 @@ map <leader>c' cs"'
 let g:python_host_prog = '/usr/bin/python'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ALE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:airline#extensions#ale#enabled = 1
+" Put this in vimrc or a plugin file of your own.
+" After this is configured, :ALEFix will try and fix your JS code with ESLint.
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\   'css': ['stylelint'],
+\   'sass': ['stylelint'],
+\}
+
+nnoremap <leader>t :ALEFix<cr>
+
+augroup FiletypeGroup
+    autocmd!
+    au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+augroup END
+
+" Set this setting in vimrc if you want to fix files automatically on save.
+" This is off by default.
+" let g:ale_fix_on_save = 1
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SYNTASTIC
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_javascript_checkers = ["eslint"]
-let g:syntastic_javascript_eslint_exec = 'eslint_d'
-let g:syntastic_auto_loc_list = 0
+" set statusline+=%#warningmsg#
+" " set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_javascript_checkers = ["eslint"]
+" let g:syntastic_javascript_eslint_exec = 'eslint_d'
+" let g:syntastic_auto_loc_list = 0
+" let g:syntastic_mode_map = { 'passive_filetypes': ['scss', 'css'] }
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 1
+" let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_javascript_checkers = ['eslint']
 
-" Autofix entire buffer with eslint_d:
-nnoremap <leader>t mF:%!eslint_d --stdin --fix-to-stdout<CR>`F
-" Autofix visual selection with eslint_d:
-vnoremap <leader>t :!eslint_d --stdin --fix-to-stdout<CR>gv
+" " Autofix entire buffer with eslint_d:
+" nnoremap <leader>t mF:%!eslint_d --stdin --fix-to-stdout<CR>`F
+" " Autofix visual selection with eslint_d:
+" vnoremap <leader>t :!eslint_d --stdin --fix-to-stdout<CR>gv
 
 
-autocmd QuickFixCmdPost [^l]* nested cwindow
-autocmd QuickFixCmdPost    l* nested lwindow
+" autocmd QuickFixCmdPost [^l]* nested cwindow
+" autocmd QuickFixCmdPost    l* nested lwindow
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader><leader> <c-^>
+" nnoremap <leader><leader> <c-^>
 inoremap <% <% %><ESC><left><left>i
 
 nnoremap ,td :Ag TODO --ignore-dir=public --ignore=bootstrap <cr>
