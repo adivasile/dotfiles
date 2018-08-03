@@ -1,4 +1,4 @@
-filetype off
+" filetype off
 set runtimepath+=~/.dotfiles/vim
 set path+=client/app
 set path+=frontend/app
@@ -9,7 +9,6 @@ set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 
 Plugin 'sheerun/vim-polyglot'
-Plugin 'tpope/vim-vinegar'
 Plugin 'gmarik/vundle'
 Plugin 'tpope/vim-rails.git'
 Plugin 'tpope/vim-fugitive.git'
@@ -19,7 +18,6 @@ Plugin 'tpope/vim-repeat.git'
 Plugin 'tpope/vim-commentary.git'
 Plugin 'kien/ctrlp.vim.git'
 Plugin 'altercation/vim-colors-solarized.git'
-" Plugin 'auto-pairs-gentle'
 Plugin 'https://github.com/rking/ag.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
@@ -29,8 +27,11 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'sjl/gundo.vim'
 Plugin 'w0rp/ale'
-Plugin 'Shougo/deoplete.nvim'
-Plugin 'Raimondi/delimitMate'
+Plugin 'godlygeek/tabular'
+
+
+
+" Plugin 'ervandew/supertab'
 
 " Plugin 'https://github.com/pangloss/vim-javascript'
 " " Plugin 'https://github.com/mxw/vim-jsx'
@@ -46,7 +47,6 @@ au BufRead,BufNewFile *.scss set filetype=scss.css
 
 " Plugin 'https://github.com/scrooloose/syntastic.git'
 
-Plugin 'ervandew/supertab'
 " Plugin 'https://github.com/Valloric/YouCompleteMe'
 " Plugin 'alvan/vim-closetag'
 
@@ -56,7 +56,7 @@ Plugin 'ervandew/supertab'
 set nocursorcolumn
 set nocursorline
 syntax sync minlines=256
-set synmaxcol=200
+set synmaxcol=120
 
 set nocompatible
 " Sets how many lines of history VIM has to remember
@@ -71,19 +71,10 @@ filetype plugin indent on
 set autoread
 set number
 
-" augroup autoSaveAndRead
-"     autocmd!
-"     autocmd TextChanged,InsertLeave,FocusLost * silent! wall
-"     autocmd CursorHold * silent! checktime
-" augroup END
-
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
-
-" Fast saving
-nmap <C-s> :w!<CR>
 
 " Fast editing of the .vimrc
 map <leader>r :e! ~/.nvimrc<cr>
@@ -124,16 +115,9 @@ set mat=2 "How many tenths of a second to blink
 " No sound on errors
 set noerrorbells
 set novisualbell
-set t_vb=
 set tm=500
 
 set nolazyredraw
-
-
-inoremap {<cr> {<cr>}<c-o>O
-inoremap [<cr> [<cr>]<c-o>O
-inoremap (<cr> (<cr>)<c-o>O
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -240,17 +224,8 @@ vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 au FileType javascript setl fen
 au FileType javascript setl nocindent
 
-au FileType javascript imap <c-t> console.log();<esc>hi
-au FileType javascript imap <c-a> alert();<esc>hi
-
-au FileType javascript inoremap <buffer> $r return
-au FileType javascript inoremap <buffer> $f //--- PH ----------------------------------------------<esc>FP2xi
-
-
-""""""""""""""""""""""""""""""""""
-" => YankRing plugin
-""""""""""""""""""""""""""""""""""
-nnoremap <silent> <F11> :YRShow<CR>
+" au FileType javascript inoremap <buffer> $r return
+" au FileType javascript inoremap <buffer> $f //--- PH ----------------------------------------------<esc>FP2xi
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -261,18 +236,6 @@ map <leader>q :e ~/buffer<cr>
 au BufRead,BufNewFile ~/buffer iab <buffer> xh1 ===========================================
 inoremap jj <ESC>
 nnoremap <tab><tab> :NERDTreeToggle<cr>
-inoremap <c-space> <space>=><space>
-
-
-""""""""""""""""""""""""""""""""""
-" => TagList AND CTAGS
-""""""""""""""""""""""""""""""""
-map <F4> :TlistToggle<cr>
-let Tlist_Ctags_Cmd = "/usr/bin/ctags"
-let Tlist_WinWidth = 50
-let Tlist_Use_Right_Window = 1
-set wmh=0
-map <Leader>rt :!ctags --extra=+f --exclude=.git --exclude=log -R * `rvm gemdir`/gems/*<CR><CR>
 
 """"""""""""""""""""""""""""""
 " => Statusline
@@ -284,7 +247,7 @@ set laststatus=2
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
 
 function! CurDir()
-  let curdir = substitute(getcwd(), '/Users/adrian/', "~/", "g")
+  let curdir = substitute(getcwd(), '/Users/adrianvasile/', "~/", "g")
   return curdir
 endfunction
 
@@ -304,27 +267,6 @@ let g:ctrlp_map = '<leader>f'
 let g:ctrlp_custom_ignore = '\v[\/](git|hg|svn|node_modules|dist|target|tmp|log)$'
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim Mustache-Handlebars
-" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:mustache_abbreviations = 1
-
-
-" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" " MULTIPURPOSE TAB KEY
-" " Indent if we're at the beginning of a line. Else, do completion.
-" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" function! InsertTabWrapper()
-"     let col = col('.') - 1
-"     if !col || getline('.')[col - 1] !~ '\k'
-"         return "\<tab>"
-"     else
-"         return "\<c-p>"
-"     endif
-" endfunction
-" inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-" inoremap <s-tab> <c-n>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FILE NAVIGATION STUFF
@@ -375,7 +317,6 @@ let g:UltiSnipsSnippetsDir="/Users/adrianvasile/.dotfiles/vim/UltiSnips"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ALIGMENT
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -415,38 +356,6 @@ augroup FiletypeGroup
     autocmd!
     au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 augroup END
-
-" Set this setting in vimrc if you want to fix files automatically on save.
-" This is off by default.
-" let g:ale_fix_on_save = 1
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" SYNTASTIC
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" set statusline+=%#warningmsg#
-" " set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-
-" let g:syntastic_javascript_checkers = ["eslint"]
-" let g:syntastic_javascript_eslint_exec = 'eslint_d'
-" let g:syntastic_auto_loc_list = 0
-" let g:syntastic_mode_map = { 'passive_filetypes': ['scss', 'css'] }
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 1
-" let g:syntastic_javascript_checkers = ['eslint']
-" let g:syntastic_javascript_checkers = ['eslint']
-
-" " Autofix entire buffer with eslint_d:
-" nnoremap <leader>t mF:%!eslint_d --stdin --fix-to-stdout<CR>`F
-" " Autofix visual selection with eslint_d:
-" vnoremap <leader>t :!eslint_d --stdin --fix-to-stdout<CR>gv
-
-
-" autocmd QuickFixCmdPost [^l]* nested cwindow
-" autocmd QuickFixCmdPost    l* nested lwindow
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC
