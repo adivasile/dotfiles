@@ -8,28 +8,28 @@ set path+=frontend/app
 set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 
-Plugin 'sheerun/vim-polyglot'
 Plugin 'gmarik/vundle'
 Plugin 'tpope/vim-rails.git'
 Plugin 'tpope/vim-fugitive.git'
 Plugin 'tpope/vim-surround.git'
-Plugin 'scrooloose/nerdtree.git'
 Plugin 'tpope/vim-repeat.git'
 Plugin 'tpope/vim-commentary.git'
+Plugin 'honza/vim-snippets'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'scrooloose/nerdtree.git'
 Plugin 'kien/ctrlp.vim.git'
 Plugin 'altercation/vim-colors-solarized.git'
 Plugin 'https://github.com/rking/ag.vim'
 Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
 Plugin 'FelikZ/ctrlp-py-matcher'
 Plugin 'bling/vim-airline'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'easymotion/vim-easymotion'
 Plugin 'sjl/gundo.vim'
-Plugin 'w0rp/ale'
 Plugin 'godlygeek/tabular'
-
-
+Plugin 'neomake/neomake'
+Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plugin 'cohama/lexima.vim'
 
 " Plugin 'ervandew/supertab'
 
@@ -40,10 +40,27 @@ Plugin 'godlygeek/tabular'
 " Plugin 'cakebaker/scss-syntax.vim'
 
 
-let g:python3_host_prog = '/usr/local/bin/ipython3'
+let g:python_host_prog = '/usr/bin/python'
+let g:python3_host_prog = '/usr/local/bin/python3'
 let g:deoplete#enable_at_startup = 1
 au BufRead,BufNewFile *.scss set filetype=scss.css
 
+" When writing a buffer (no delay), and on normal mode changes (after 750ms).
+call neomake#configure#automake('nw', 800)
+let g:neomake_javascript_enabled_makers = ['eslint_d']
+" let g:neomake_javascript_enabled_makers = []
+let g:neomake_ruby_enabled_makers = []
+let g:neomake_open_list=2
+let g:neomake_jsx_enabled_makers = ['eslint_d']
+let g:neomake_logfile = '/usr/local/var/log/neomake.log'
+autocmd! BufWritePost * Neomake
+
+	
+nmap <Leader><Space>o :lopen<CR>      " open location window
+nmap <Leader><Space>c :lclose<CR>     " close location window
+nmap <Leader><Space>, :ll<CR>         " go to current error/warning
+nmap <Leader><Space>n :lnext<CR>      " next error/warning
+nmap <Leader><Space>p :lprev<CR>      " previous error/warning
 
 " Plugin 'https://github.com/scrooloose/syntastic.git'
 
@@ -55,7 +72,7 @@ au BufRead,BufNewFile *.scss set filetype=scss.css
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocursorcolumn
 set nocursorline
-syntax sync minlines=256
+" syntax sync minlines=256
 set synmaxcol=120
 
 set nocompatible
@@ -87,6 +104,7 @@ autocmd! bufwritepost ~/.nvimrc source ~/.nvimrc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set 7 lines to the curors - when moving vertical..
 set so=4
+set synmaxcol=0
 
 set wildmenu "Turn on WiLd menu
 set wildmode=longest,list
@@ -135,9 +153,9 @@ else
   set background=dark
 endif
 
-" set t_Co=256
-" let g:solarized_termtrans = 1
-" let g:solarized_termcolors=256
+set t_Co=256
+let g:solarized_termtrans = 1
+let g:solarized_termcolors=256
 colorscheme solarized 
 
 " set encoding=utf8
@@ -335,27 +353,7 @@ map <leader>s' ysiw'
 map <leader>s` ysiw`
 map <leader>c' cs"'
 
-let g:python_host_prog = '/usr/bin/python'
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ALE
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-let g:airline#extensions#ale#enabled = 1
-" Put this in vimrc or a plugin file of your own.
-" After this is configured, :ALEFix will try and fix your JS code with ESLint.
-let g:ale_fixers = {
-\   'javascript': ['eslint'],
-\   'css': ['stylelint'],
-\   'sass': ['stylelint'],
-\}
-
-nnoremap <leader>t :ALEFix<cr>
-
-augroup FiletypeGroup
-    autocmd!
-    au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
-augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC
@@ -370,5 +368,4 @@ let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
 au BufRead,BufNewFile *.pde set filetype=arduino
 au BufRead,BufNewFile *.ino set filetype=arduino
 au BufNewFile,BufRead *.ejs set filetype=html
-au BufNewFile,BufRead *.hbs set filetype=mustache
 au BufNewFile,BufRead *.es6 set filetype=javascript
