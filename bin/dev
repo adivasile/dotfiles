@@ -7,10 +7,10 @@ if [ $# -eq 0 ] # if there are no arguments, start a session in the current dire
     project=${PWD##*/}  
   else # consider first argument as session default dir
     project=$1
-    echo $project
+
     cd $PROJECTS/$project
 
-    if [ $? -eq 0 ]
+    if [ $? -eq 1 ]
       then
         exit 1
     fi
