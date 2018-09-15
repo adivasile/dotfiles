@@ -18,7 +18,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'scrooloose/nerdtree.git'
-Plugin 'kien/ctrlp.vim.git'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'altercation/vim-colors-solarized.git'
 Plugin 'https://github.com/rking/ag.vim'
 Plugin 'SirVer/ultisnips'
@@ -30,6 +30,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'neomake/neomake'
 Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plugin 'cohama/lexima.vim'
+Plugin 'tpope/vim-eunuch'
 
 " Plugin 'ervandew/supertab'
 
@@ -284,6 +285,7 @@ let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 let g:ctrlp_map = '<leader>f'
 let g:ctrlp_custom_ignore = '\v[\/](git|hg|svn|node_modules|dist|target|tmp|log)$'
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+nmap <leader>b :CtrlPBuffer<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

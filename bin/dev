@@ -30,5 +30,4 @@ if [ $? -eq 0 ] # this means there's already a tmux session with this name runni
       split-window -v \; \
       send-keys 'cd client' C-m \; \
       send-keys 'yarn start' C-m
-
 fi
