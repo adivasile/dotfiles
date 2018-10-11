@@ -1,21 +1,14 @@
 snippet comp "Basic compoent"
 /* eslint react/prop-types: 0 */
 import React from 'react';
-import autoBind from 'react-autobind';
 
 class $1 extends React.Component {
-	constructor(props) {
-		super(props);
-
-		autoBind(this);
-	}
-
 	render() {
 		return (
 			<div>
 				Content goes here
 			</div>
-		)
+		);
 	}
 }
 
