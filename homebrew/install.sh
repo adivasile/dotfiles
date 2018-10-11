@@ -6,7 +6,7 @@
 # using Homebrew.
 
 
-if [ "$(uname -s)" = "Darwin" ]
+if [ "$(uname -s)" = "Linux" ]
 then
   echo "Skip Homebrew installing on Linux"
   exit 0
