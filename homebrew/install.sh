@@ -5,6 +5,13 @@
 # This installs some of the common dependencies needed (or at least desired)
 # using Homebrew.
 
+
+if [ "$(uname -s)" = "Darwin" ]
+then
+  echo "Skip Homebrew installing on Linux"
+  exit 0
+fi
+
 # Check for Homebrew
 if test ! $(which brew)
 then
