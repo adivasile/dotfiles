@@ -33,6 +33,7 @@ Plugin 'tpope/vim-eunuch'
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
 Plugin 'majutsushi/tagbar'
+Plugin 'tmux-plugins/vim-tmux-focus-events'
 
 " Plugin 'ervandew/supertab'
 " Plugin 'ctrlpvim/ctrlp.vim'
