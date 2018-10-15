@@ -1,4 +1,4 @@
-" filetype off
+filetype off
 set runtimepath+=~/.dotfiles/vim
 set path+=client/app
 set path+=frontend/app
@@ -44,8 +44,11 @@ Plugin 'majutsushi/tagbar'
 " Plugin 'cakebaker/scss-syntax.vim'
 
 
+call vundle#end()            " required
+filetype plugin indent on    " required
+
 let g:python_host_prog = '/usr/bin/python'
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python3_host_prog = '/usr/bin/python3'
 let g:deoplete#enable_at_startup = 1
 au BufRead,BufNewFile *.scss set filetype=scss.css
 
