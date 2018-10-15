@@ -5,3 +5,5 @@ else
   brew update
   brew install tmux
 fi
+
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
