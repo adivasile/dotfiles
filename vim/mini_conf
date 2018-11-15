@@ -1,0 +1,49 @@
+eariuet number
+
+set ignorecase "Ignore case when searching
+set smartcase
+set incsearch
+
+set expandtab
+set shiftwidth=2
+set tabstop=2
+set smarttab
+
+set ai
+set si
+
+set showmatch "Show matching bracets when text indicator is over them
+set mat=2 "How many tenths of a second to blink
+
+" better way to move between windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Turn backup off, since most stuff is in SVN, git anyway...
+set nobackup
+set nowb
+set noswapfile
+
+"Persistent undo
+set undodir=~/.vim_tmp/undodir
+set undofile
+
+" Enable filetype plugin
+filetype plugin indent on
+
+syntax enable
+
+
+" move to beginning/end of line
+noremap B ^
+noremap E $
+
+" $/^ doesn't do anything
+noremap $ <nop>
+noremap ^ <nop>
+nnoremap gV `[v`]
+nnoremap <leader>a :Ag
+
+inoremap jj <ESC>
