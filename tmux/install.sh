@@ -6,4 +6,5 @@ else
   brew install tmux
 fi
 
+rm -rf ~/.tmux/
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
