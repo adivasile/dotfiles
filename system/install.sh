@@ -5,6 +5,6 @@ then
   sudo apt-get install silversearcher-ag
   sudo apt-get install libpq-dev
 else
-  bew install the_silver_searcher
+  brew install the_silver_searcher
 fi
 

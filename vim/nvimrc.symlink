@@ -1,4 +1,5 @@
 filetype off
+set shada="NONE"
 set runtimepath+=~/.dotfiles/vim
 set path+=client/app
 set path+=frontend/app
