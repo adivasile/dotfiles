@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+require 'net/http'
+require 'net/https'
+require 'uri'
+require 'json'
+
+auth_params = {
+  username: ENV['PORTAINER_USER'],
+  password: ENV['PORTAINER_PASS']
+}
+
+headers = {
+  'Content-Type' =>'application/json',
+  'Accept'=>'application/json'
+}
+
+auth_uri = URI("http://#{ENV['PORTAINER_URL']}/api/auth")
+http = Net::HTTP.new(auth_uri.host, auth_uri.port)
+auth_response = http.post(auth_uri.path, auth_params.to_json, headers)
+
+token = "Bearer #{JSON.parse(auth_response.body)['jwt']}"
+
+headers['Authorization'] = token
+
+# Get Endpoints
+endpoints_uri = URI("http://#{ENV['PORTAINER_URL']}/api/endpoints")
+http = Net::HTTP.new(endpoints_uri.host, endpoints_uri.port)
+endpoints_response = http.get(endpoints_uri.path, headers)
+
+JSON.parse(endpoints_response.body).each do |endpoint|
+  next if endpoint['Command'] == '/portainer'
+
+  container_uri = URI("http://#{ENV['PORTAINER_URL']}/api/endpoints/#{endpoint['Id']}/docker/containers/json?all=1")
+  container_http = Net::HTTP.new(container_uri.host, container_uri.port)
+  containers_response = container_http.get(container_uri.path, headers)
+
+  JSON.parse(containers_response.body).each do |container|
+    next if container['Image'] == 'proxy'
+    puts "\t  \e[31m#{endpoint['Name']} --  \e[32m#{container['Image']}"
+  end
+end
+puts "\e[0m"

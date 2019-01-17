@@ -35,7 +35,7 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'tmux-plugins/vim-tmux-focus-events'
 
-" Plugin 'ervandew/supertab'
+Plugin 'ervandew/supertab'
 " Plugin 'ctrlpvim/ctrlp.vim'
 
 " Plugin 'https://github.com/pangloss/vim-javascript'
@@ -373,6 +373,7 @@ map <leader>s` ysiw`
 map <leader>c' cs"'
 
 
+cnoremap dox exec '!chmod +x ' . @%  <CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC
