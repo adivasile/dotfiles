@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+# Copy the current branch name to the clipboard.
+
+remote=$(git config --get remote.origin.url)
+echo $remote
+echo $remote | tr -d '\n' | tr -d ' ' | pbcopy
