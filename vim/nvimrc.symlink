@@ -24,7 +24,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 Plug 'honza/vim-snippets'
 Plug 'easymotion/vim-easymotion'
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'altercation/vim-colors-solarized'
 Plug 'https://github.com/rking/ag.vim'
 Plug 'SirVer/ultisnips'
@@ -37,11 +37,13 @@ Plug 'tpope/vim-eunuch'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'ervandew/supertab'
 Plug 'sheerun/vim-polyglot'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux-focus-events'
+
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'jsx'] }
 
 call plug#end()
 
@@ -56,7 +58,7 @@ call neomake#configure#automake('nw', 800)
 let g:neomake_javascript_enabled_makers = ['eslint_d']
 " let g:neomake_javascript_enabled_makers = []
 let g:neomake_ruby_enabled_makers = []
-let g:neomake_open_list=2
+let g:neomake_open_list=0
 let g:neomake_jsx_enabled_makers = ['eslint_d']
 let g:neomake_logfile = '/usr/local/var/log/neomake.log'
 autocmd! BufWritePost * Neomake
