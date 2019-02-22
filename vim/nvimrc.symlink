@@ -41,6 +41,7 @@ Plug 'ervandew/supertab'
 Plug 'sheerun/vim-polyglot'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'edkolev/tmuxline.vim'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'jsx'] }
@@ -70,28 +71,6 @@ nmap <Leader><Space>, :ll<CR>         " go to current error/warning
 nmap <Leader><Space>n :lnext<CR>      " next error/warning
 nmap <Leader><Space>p :lprev<CR>      " previous error/warning
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim Rolodex
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"toggles whether or not the current window is automatically zoomed
-function! ToggleMaxWins()
-  if exists('g:windowMax')
-    au! maxCurrWin
-    wincmd =
-    unlet g:windowMax
-  else
-    augroup maxCurrWin
-        " au BufEnter * wincmd _ | wincmd |
-        "
-        " only max it vertically
-        au! WinEnter * wincmd _
-    augroup END
-    do maxCurrWin WinEnter
-    let g:windowMax=1
-  endif
-endfunction
-nnoremap <Leader>mx :call ToggleMaxWins()<CR>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -103,7 +82,7 @@ set synmaxcol=120
 
 set nocompatible
 " Sets how many lines of history VIM has to remember
-set history=1000
+set history=3000
 
 set foldmethod=indent
 set foldlevelstart=99
@@ -126,18 +105,20 @@ let g:mapleader = ","
 map <leader>r :e! ~/.nvimrc<cr>
 
 " When vimrc is edited, reload it
-autocmd! bufwritepost ~/.nvimrc source ~/.nvimrc
+autocmd! BufWritePost ~/.nvimrc source ~/.nvimrc
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set 7 lines to the curors - when moving vertical..
+" Set 4 lines to the curors - when moving vertical..
 set so=4
 set synmaxcol=0
 
 set wildmenu "Turn on WiLd menu
 set wildmode=longest,list
 set scrolloff=3
+
+let g:airline#extensions#tabline#enabled = 1
 
 set cmdheight=1 "The commandbar height
 
@@ -176,11 +157,7 @@ syntax enable "Enable syntax hl
 set gfn=M+2m\ 10
 set shell=/bin/zsh
 
-if has("gui_running")
-  set background=dark
-else
-  set background=dark
-endif
+set background=dark
 
 set t_Co=256
 let g:solarized_termtrans = 1
@@ -195,6 +172,26 @@ endtry
 
 set ffs=unix,dos,mac "Default file types
 nnoremap <leader>u :GundoToggle<CR>
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Ripgrep
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" --column: Show column number
+" --line-number: Show line number
+" --no-heading: Do not show file headings in results
+" --fixed-strings: Search term as a literal string
+" --ignore-case: Case insensitive search
+" --no-ignore: Do not respect .gitignore, etc...
+" --hidden: Search hidden files and folders
+" --follow: Follow symlinks
+" --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+" --color: Search color options
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+
+nnoremap <leader>g :Find
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -236,7 +233,7 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" Use the arrows to something usefull
+" Use the arrows for something usefull
 map <right> <nop>
 map <left> <nop>
 map <up> <nop>
@@ -389,7 +386,6 @@ map <leader>sp ysiw)
 map <leader>s' ysiw'
 map <leader>s` ysiw`
 map <leader>c' cs"'
-
 
 cnoremap dox exec '!chmod +x ' . @%  <CR>
 

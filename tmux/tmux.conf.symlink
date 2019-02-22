@@ -15,12 +15,10 @@ set -g set-titles-string '#(whoami)::#h::#(curl ipecho.net/plain;echo)'
 set -g focus-events on
 set -sg escape-time 0
 
-# Use vim keybindings in copy mode
-setw -g mode-keys vi
-
-if -b "command -v reattach-to-user-namespace > /dev/null 2>&1" \
-    "run 'tmux set -g default-command \"exec $(tmux show -gv default-shell) 2>/dev/null & reattach-to-user-namespace -l $(tmux show -gv default-shell)\"'"
-
+bind-key -T copy-mode-vi v send -X begin-selection
+bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
+bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "pbcopy"
 
 # Status bar customization
 # set -g status-utf8 on
