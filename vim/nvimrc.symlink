@@ -42,6 +42,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'edkolev/tmuxline.vim'
+Plug 'qpkorr/vim-bufkill'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'jsx'] }
@@ -120,6 +121,10 @@ set scrolloff=3
 
 let g:airline#extensions#tabline#enabled = 1
 
+nnoremap <leader>d :BF<CR>
+nnoremap <leader>a :BB<CR>
+nnoremap <leader>s :BW<CR>
+
 set cmdheight=1 "The commandbar height
 
 set hid "Change buffer - without saving
@@ -191,7 +196,7 @@ nnoremap <leader>u :GundoToggle<CR>
 " --color: Search color options
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 
-nnoremap <leader>g :Find
+nnoremap <leader>g :Find 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -247,7 +252,6 @@ noremap E $
 noremap $ <nop>
 noremap ^ <nop>
 nnoremap gV `[v`]
-nnoremap <leader>a :Ag
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
@@ -346,7 +350,6 @@ function! ShowRoutes()
 endfunction
 map <leader>y "*y
 map <leader>p "*p
-map <leader>s :sp<cr>
 map <leader>v :vs<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -392,7 +395,7 @@ cnoremap dox exec '!chmod +x ' . @%  <CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" nnoremap <leader><leader> <c-^>
+nnoremap <leader>e :BA<CR>
 inoremap <% <% %><ESC><left><left>i
 
 nnoremap ,td :Ag TODO --ignore-dir=public --ignore=bootstrap <cr>
