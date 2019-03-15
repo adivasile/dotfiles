@@ -35,7 +35,6 @@ JSON.parse(endpoints_response.body).each do |endpoint|
   containers_response = container_http.get(container_uri.path, headers)
 
   JSON.parse(containers_response.body).each do |container|
-    next if container['Image'] == 'proxy'
     puts "\t  \e[31m#{endpoint['Name']} --  \e[32m#{container['Image']}"
   end
 end

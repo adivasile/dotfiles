@@ -119,11 +119,12 @@ set wildmenu "Turn on WiLd menu
 set wildmode=longest,list
 set scrolloff=3
 
-let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#enabled = 1
 
 nnoremap <leader>d :BF<CR>
 nnoremap <leader>a :BB<CR>
 nnoremap <leader>s :BW<CR>
+nnoremap <leader>e :BA<CR>
 
 set cmdheight=1 "The commandbar height
 
@@ -395,7 +396,6 @@ cnoremap dox exec '!chmod +x ' . @%  <CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader>e :BA<CR>
 inoremap <% <% %><ESC><left><left>i
 
 nnoremap ,td :Ag TODO --ignore-dir=public --ignore=bootstrap <cr>
