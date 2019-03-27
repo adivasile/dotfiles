@@ -6,6 +6,28 @@ require 'uri'
 require 'json'
 require 'faye/websocket'
 require 'eventmachine'
+require 'optparse'
+
+
+if ARGV.empty?
+  puts "Missing required arguments: agent-id and container-id\n\n"
+  ARGV << '-h'
+end
+
+options = {
+  file: "log/${RAILS_ENV}.log"
+}
+prs = OptionParser.new do |opts|
+  opts.banner = "Usage: portainer-logs [agent-id] [container-id] [-f FILE]"
+
+  opts.on("-f", "--file [FILE]", "File to be tail-ed. Defaults to rails log") do |v|
+    options[:file] = v
+  end
+  opts.on("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end.parse!
 
 auth_params = {
   username: ENV['PORTAINER_USER'],
@@ -24,23 +46,6 @@ auth_response = http.post(auth_uri.path, auth_params.to_json, headers)
 token = JSON.parse(auth_response.body)['jwt']
 
 headers['Authorization'] = "Bearer #{token}"
-
-require 'optparse'
-
-options = {
-  file: "log/${RAILS_ENV}.log"
-}
-OptionParser.new do |opts|
-  opts.banner = "Usage: example.rb [options]"
-
-  opts.on("-f", "--file [FILE]", "File to be tail-ed. Defaults to rails log") do |v|
-    options[:file] = v
-  end
-  opts.on_tail("-h", "--help", "Show this message") do
-    puts opts
-    exit
-  end
-end.parse!
 
 endpoint_id = ARGV[0] 
 container_id = ARGV[1]
