@@ -27,6 +27,11 @@ endpoints_uri = URI("http://#{ENV['PORTAINER_URL']}/api/endpoints")
 http = Net::HTTP.new(endpoints_uri.host, endpoints_uri.port)
 endpoints_response = http.get(endpoints_uri.path, headers)
 
+red = "\e[31m"
+green = "\e[32m"
+yellow = "\e[33m"
+reset = "\e[0m"
+
 JSON.parse(endpoints_response.body).each do |endpoint|
   next if endpoint['Command'] == '/portainer'
 
@@ -35,7 +40,6 @@ JSON.parse(endpoints_response.body).each do |endpoint|
   containers_response = container_http.get(container_uri.path, headers)
 
   JSON.parse(containers_response.body).each do |container|
-    puts "\t  \e[31m#{endpoint['Name']} --  \e[32m#{container['Image']}"
+    puts "\t#{red}#{endpoint['Name'].rjust(10)}\t#{green}#{container['Image'].ljust(50)}\t#{yellow}#{container['Id']}#{reset}"
   end
 end
-puts "\e[0m"

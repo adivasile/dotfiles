@@ -1,0 +1,78 @@
+#!/usr/bin/env ruby
+
+require 'net/http'
+require 'net/https'
+require 'uri'
+require 'json'
+require 'faye/websocket'
+require 'eventmachine'
+
+auth_params = {
+  username: ENV['PORTAINER_USER'],
+  password: ENV['PORTAINER_PASS']
+}
+
+headers = {
+  'Content-Type' =>'application/json',
+  'Accept'=>'application/json'
+}
+
+auth_uri = URI("http://#{ENV['PORTAINER_URL']}/api/auth")
+http = Net::HTTP.new(auth_uri.host, auth_uri.port)
+auth_response = http.post(auth_uri.path, auth_params.to_json, headers)
+
+token = JSON.parse(auth_response.body)['jwt']
+
+headers['Authorization'] = "Bearer #{token}"
+
+require 'optparse'
+
+options = {
+  file: "log/${RAILS_ENV}.log"
+}
+OptionParser.new do |opts|
+  opts.banner = "Usage: example.rb [options]"
+
+  opts.on("-f", "--file [FILE]", "File to be tail-ed. Defaults to rails log") do |v|
+    options[:file] = v
+  end
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end.parse!
+
+endpoint_id = ARGV[0] 
+container_id = ARGV[1]
+
+get_exec_uri = URI("http://#{ENV['PORTAINER_URL']}/api/endpoints/#{endpoint_id}/docker/containers/#{container_id}/exec")
+
+exec_payload = {
+  "id" => container_id,
+  'AttachStderr' => true,
+  'AttachStdin' => true,
+  'AttachStdout' => true,
+  'Tty' => true,
+  'Cmd' => ['bash']
+}
+
+resp = http.post get_exec_uri.path, exec_payload.to_json, headers
+
+tty_id = JSON.parse(resp.body)['Id']
+
+exec_uri = "ws://#{ENV['PORTAINER_URL']}/api/websocket/exec?id=#{tty_id}&endpointId=#{endpoint_id}&token=#{token}"
+
+EM.run {
+  ws = Faye::WebSocket::Client.new(exec_uri)
+
+  ws.on :message do |event|
+    puts event.data
+  end
+
+  ws.send("tail -f #{options[:file]}\n")
+
+  ws.on :close do |event|
+    p [:close, event.code, event.reason]
+    ws = nil
+  end
+}
