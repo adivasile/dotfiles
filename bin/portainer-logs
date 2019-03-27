@@ -23,7 +23,7 @@ prs = OptionParser.new do |opts|
   opts.on("-f", "--file [FILE]", "File to be tail-ed. Defaults to rails log") do |v|
     options[:file] = v
   end
-  opts.on("-h", "--help", "Show this message") do
+  opts.on_tail("-h", "--help", "Show this message") do
     puts opts
     exit
   end

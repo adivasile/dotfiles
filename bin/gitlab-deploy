@@ -13,54 +13,60 @@ end
 
 deploy_cfg = YAML.load(File.open('.gitlab-deploy.yml'))
 branch = %x(git branch | grep \\* | cut -d ' ' -f2).strip
-target_branch = ARGV[0]
+target_branches = ARGV
 
-if target_branch.nil?
+if target_branches.nil? || target_branches.length == 0
   puts "You need to specify target branch"
   exit 1
 end
 
-project_id = deploy_cfg['project_id']
-project = Gitlab.project(project_id)
+target_branches.each do |target_branch|
+  project_id = deploy_cfg['project_id']
+  project = Gitlab.project(project_id)
 
+  puts "Starting deployment for #{project.name} in #{target_branch}"
 
-puts "Starting deployment for #{project.name} in #{target_branch}"
+  merge_req = Gitlab.create_merge_request(project_id, 'Deploy', { source_branch: branch, target_branch: target_branch} )
 
-merge_req = Gitlab.create_merge_request(project_id, 'Deploy', { source_branch: branch, target_branch: target_branch} )
+  resp = Gitlab.accept_merge_request(project_id, merge_req.iid)
 
-resp = Gitlab.accept_merge_request(project_id, merge_req.iid)
+  puts "Merge request submitted and accepted"
 
-puts "Merge request submitted and accepted"
+  pipelines = Gitlab.pipelines(project.id)
 
-pipelines = Gitlab.pipelines(project.id)
+  pipeline = Gitlab.pipeline(project.id, pipelines.first.id)
 
-pipeline = Gitlab.pipeline(project.id, pipelines.first.id)
+  job = Gitlab.pipeline_jobs(project.id, pipeline.id).first
 
-job = Gitlab.pipeline_jobs(project.id, pipeline.id).first
+  print "Fetching job. Status is ... "
 
-print "Fetching job. Status is ... "
+  status = Gitlab.job(project.id, job.id).status
+  print status
+  puts ""
 
-status = Gitlab.job(project.id, job.id).status
-print status
-puts ""
+  if status == 'pending'
+    puts "Waiting for job to start ..."
+  end
 
-if status == 'pending'
-  puts "Waiting for job to start ..."
+  prev_trace = ''
+  until ['success', 'failed', 'canceled'].include? Gitlab.job(project.id, job.id).status
+    trace = Gitlab.job_trace(project.id, job.id)
+    next if trace.nil?
+    trace = trace.gsub('%', '%%')
+    print "\b\b\b"
+    common = prev_trace % trace
+    prev_trace = trace.clone
+    trace.slice! common
+    next if trace == ''
+    puts trace
+    print '...'
+    sleep 2
+  end
+
+  puts "Build complete. Waiting for pipeline to finish"
+
+  until ['success', 'failed', 'canceled'].include? Gitlab.pipeline(project.id, pipeline.id).status
+    puts "\twaiting ..."
+    sleep 3
+  end
 end
-
-prev_trace = ''
-until ['success', 'failed', 'canceled'].include? Gitlab.job(project.id, job.id).status
-  trace = Gitlab.job_trace(project.id, job.id)
-  next if trace.nil?
-  trace = trace.gsub('%', '%%')
-  print "\b\b\b"
-  common = prev_trace % trace
-  prev_trace = trace.clone
-  trace.slice! common
-  next if trace == ''
-  puts trace
-  print '...'
-  sleep 2
-end
-
-puts "Deployment complete ..."
