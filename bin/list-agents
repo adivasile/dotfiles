@@ -1,45 +1,46 @@
 #!/usr/bin/env ruby
-require 'net/http'
-require 'net/https'
-require 'uri'
-require 'json'
 
-auth_params = {
-  username: ENV['PORTAINER_USER'],
-  password: ENV['PORTAINER_PASS']
-}
 
-headers = {
-  'Content-Type' =>'application/json',
-  'Accept'=>'application/json'
-}
+qa_hosts = %x(cat ~/.ssh/config | grep Host | grep agent.*qa | cut -d ' ' -f 2).split("\n")
 
-auth_uri = URI("http://#{ENV['PORTAINER_URL']}/api/auth")
-http = Net::HTTP.new(auth_uri.host, auth_uri.port)
-auth_response = http.post(auth_uri.path, auth_params.to_json, headers)
+lines = []
+threads = []
+qa_hosts.each do |host|
+  lines << `ssh #{host} -t 'docker ps --format "{{.ID}} {{.Image}} #{host}"' 2>/dev/null`.split("\n")
+end
 
-token = "Bearer #{JSON.parse(auth_response.body)['jwt']}"
+threads.map(&:join)
 
-headers['Authorization'] = token
+containers = []
+lines.flatten.each_with_index do |line, index|
+  id = line.split(' ')[0]
+  image = line.split(' ')[1]
+  agent = line.split(' ')[2]
 
-# Get Endpoints
-endpoints_uri = URI("http://#{ENV['PORTAINER_URL']}/api/endpoints")
-http = Net::HTTP.new(endpoints_uri.host, endpoints_uri.port)
-endpoints_response = http.get(endpoints_uri.path, headers)
+  containers << { id: id, image: image, agent: agent }
 
-red = "\e[31m"
-green = "\e[32m"
-yellow = "\e[33m"
-reset = "\e[0m"
+  puts "#{index}. #{image.split("/")[1]}"
+end
 
-JSON.parse(endpoints_response.body).each do |endpoint|
-  next if endpoint['Command'] == '/portainer'
+print 'Choose a container: '
+cnt_idx = gets.strip.to_i
 
-  container_uri = URI("http://#{ENV['PORTAINER_URL']}/api/endpoints/#{endpoint['Id']}/docker/containers/json?all=1")
-  container_http = Net::HTTP.new(container_uri.host, container_uri.port)
-  containers_response = container_http.get(container_uri.path, headers)
+container = containers[cnt_idx]
 
-  JSON.parse(containers_response.body).each do |container|
-    puts "\t#{red}#{endpoint['Name'].rjust(10)}\t#{green}#{container['Image'].ljust(50)}\t#{yellow}#{container['Id']}#{reset}"
-  end
+if container.nil?
+  puts "Bad index"
+  exit 1
+end
+
+puts "Actions:"
+puts "1. SSH (docker exec -it <id> sh)"
+puts "2. Container logs (docker logs -f <id>)"
+
+act_idx = gets.strip.to_i
+
+
+if act_idx == 1
+  exec "ssh #{container[:agent]} -t 'docker exec -it #{container[:id]} sh'"
+elsif act_idx == 2
+  exec "ssh #{container[:agent]} -t 'docker logs -f #{container[:id]}'"
 end

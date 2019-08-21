@@ -18,6 +18,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'gmarik/vundle'
 Plug 'tpope/vim-rails'
+Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -99,8 +100,8 @@ set number
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
+let mapleader = " "
+let g:mapleader = " "
 
 " Fast editing of the .vimrc
 map <leader>r :e! ~/.nvimrc<cr>
@@ -294,7 +295,7 @@ nnoremap <tab><tab> :NERDTreeToggle<cr>
 set laststatus=2
 
 " Format the statusline
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
+" set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
 
 function! CurDir()
   let curdir = substitute(getcwd(), '/Users/adrianvasile/', "~/", "g")

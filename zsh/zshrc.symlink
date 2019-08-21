@@ -53,6 +53,8 @@ fi
 
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
 # man() {
 #     env \
 #     LESS_TERMCAP_mb="$(printf "\e[1;31m")" \
@@ -65,9 +67,9 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 #     man "${@}"
 #   }
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
 # export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
