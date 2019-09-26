@@ -19,7 +19,7 @@ lines.flatten.each_with_index do |line, index|
 
   containers << { id: id, image: image, agent: agent }
 
-  puts "#{index}. #{image.split("/")[1]}"
+  puts "#{index}. #{image}, #{agent}"
 end
 
 print 'Choose a container: '

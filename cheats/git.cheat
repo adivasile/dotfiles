@@ -1,0 +1,4 @@
+% git
+
+# Create a new branch that will track a remote one
+git checkout -b branch-name --track remote/branch

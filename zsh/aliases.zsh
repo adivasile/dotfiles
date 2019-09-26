@@ -5,3 +5,4 @@ alias vim=nvim
 alias sshconf='vim ~/.ssh/config'
 alias dotfiles='vim ~/.dotfiles'
 alias ll="ls -alh"
+alias cmd="navi --print | pbcopy"
