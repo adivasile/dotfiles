@@ -3,6 +3,7 @@ set shada="NONE"
 set runtimepath+=~/.dotfiles/vim
 set path+=client/app
 set path+=frontend/app
+set path+=app/frontend
 
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -16,7 +17,6 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
-Plug 'gmarik/vundle'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
@@ -29,8 +29,9 @@ Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'altercation/vim-colors-solarized'
 Plug 'https://github.com/rking/ag.vim'
 Plug 'SirVer/ultisnips'
-Plug 'bling/vim-airline'
-Plug 'sjl/gundo.vim'
+Plug 'tpope/vim-dispatch'
+Plug 'itchyny/lightline.vim'
+Plug 'mbbill/undotree'
 Plug 'godlygeek/tabular'
 Plug 'neomake/neomake'
 Plug 'cohama/lexima.vim'
@@ -43,36 +44,51 @@ Plug 'sheerun/vim-polyglot'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'edkolev/tmuxline.vim'
-Plug 'qpkorr/vim-bufkill'
-
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'chrisbra/Colorizer'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-rhubarb'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for': ['javascript', 'jsx'] }
+Plug 'arzg/vim-colors-xcode'
 
 call plug#end()
 
 
 let g:python_host_prog = '/usr/bin/python'
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python3_host_prog = '/usr/local/bin/python3.8'
 let g:deoplete#enable_at_startup = 1
 au BufRead,BufNewFile *.scss set filetype=scss.css
 
 " When writing a buffer (no delay), and on normal mode changes (after 750ms).
 call neomake#configure#automake('nw', 800)
-let g:neomake_javascript_enabled_makers = ['eslint_d']
-" let g:neomake_javascript_enabled_makers = []
-let g:neomake_ruby_enabled_makers = []
-let g:neomake_open_list=0
+" let g:neomake_javascript_enabled_makers = ['eslint_d']
+let g:neomake_ruby_enabled_makers = ['rubocop']
+let g:neomake_open_list=2
+
 let g:neomake_jsx_enabled_makers = ['eslint_d']
 let g:neomake_logfile = '/usr/local/var/log/neomake.log'
 autocmd! BufWritePost * Neomake
-
+autocmd FileType ruby nnoremap <buffer> <leader>lc :!rubocop -a %<CR>
 	
-nmap <Leader><Space>o :lopen<CR>      " open location window
-nmap <Leader><Space>c :lclose<CR>     " close location window
-nmap <Leader><Space>, :ll<CR>         " go to current error/warning
-nmap <Leader><Space>n :lnext<CR>      " next error/warning
-nmap <Leader><Space>p :lprev<CR>      " previous error/warning
+nmap <Leader>lo :lopen<CR>      " open location window
+nmap <Leader>lc :lclose<CR>     " close location window
+nmap <Leader>l, :ll<CR>         " go to current error/warning
+nmap <Leader>ln :lnext<CR>      " next error/warning
+nmap <Leader>lp :lprev<CR>      " previous error/warning
 
+nmap <Leader>qo :copen<CR>      " open quickfix window
+nmap <Leader>qc :cclose<CR>     " close quickfix window
+nmap <Leader>q, :cl<CR>         " go to current error/warning
+nmap <Leader>qn :cnext<CR>      " next error/warning
+nmap <Leader>qp :cprev<CR>      " previous error/warning
+
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -86,7 +102,7 @@ set nocompatible
 " Sets how many lines of history VIM has to remember
 set history=3000
 
-set foldmethod=indent
+set foldmethod=syntax
 set foldlevelstart=99
 
 autocmd VimResized * wincmd =
@@ -98,16 +114,19 @@ filetype plugin indent on
 set autoread
 set number
 
+" Enable colors
+nmap <leader>c :ColorHighlight<CR>
+
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = " "
 let g:mapleader = " "
 
 " Fast editing of the .vimrc
-map <leader>r :e! ~/.nvimrc<cr>
+map <leader>n :e! ~/.nvimrc<cr>
 
 " When vimrc is edited, reload it
-autocmd! BufWritePost ~/.nvimrc source ~/.nvimrc
+autocmd! BufWritePost ~/.nvimrc source ~/.config/nvim/init.vim
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -119,13 +138,6 @@ set synmaxcol=0
 set wildmenu "Turn on WiLd menu
 set wildmode=longest,list
 set scrolloff=3
-
-" let g:airline#extensions#tabline#enabled = 1
-
-nnoremap <leader>d :BF<CR>
-nnoremap <leader>a :BB<CR>
-nnoremap <leader>s :BW<CR>
-nnoremap <leader>e :BA<CR>
 
 set cmdheight=1 "The commandbar height
 
@@ -166,10 +178,13 @@ set shell=/bin/zsh
 
 set background=dark
 
-set t_Co=256
 let g:solarized_termtrans = 1
 let g:solarized_termcolors=256
-colorscheme solarized 
+set t_Co=256
+colorscheme solarized
+
+hi clear SignColumn
+" highlight Pmenu ctermbg=gray guibg=gray
 
 " set encoding=utf8
 try
@@ -178,7 +193,8 @@ catch
 endtry
 
 set ffs=unix,dos,mac "Default file types
-nnoremap <leader>u :GundoToggle<CR>
+nnoremap <leader>u :UndotreeToggle<CR>
+let g:undotree_SetFocusWhenToggle = 1
 
 
 
@@ -196,9 +212,18 @@ nnoremap <leader>u :GundoToggle<CR>
 " --follow: Follow symlinks
 " --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 " --color: Search color options
-" command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+" command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --smart-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 
-nnoremap <leader>g :Rg<CR>
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --fixed-strings --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
+nnoremap <leader>F :Rg<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -231,7 +256,6 @@ set si "Smart indet
 " => Moving around, tabs and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Map space to / (search) and c-space to ? (backwards search)
-map <space> /
 map <silent> <cr> :noh<cr>
 
 " Smart way to move btw. windows
@@ -254,6 +278,10 @@ noremap E $
 noremap $ <nop>
 noremap ^ <nop>
 nnoremap gV `[v`]
+
+" Saving
+
+nmap <leader>w :w<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
@@ -283,38 +311,69 @@ au FileType javascript setl nocindent
 " => MISC
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Quickly open a buffer for scribble
-map <leader>q :e ~/buffer<cr>
 au BufRead,BufNewFile ~/buffer iab <buffer> xh1 ===========================================
 inoremap jj <ESC>
+
+
+"""""""""""""""""""""""""""""""
+"" => NERDTree
+"""""""""""""""""""""""""""""""
+
 nnoremap <tab><tab> :NERDTreeToggle<cr>
+let g:NERDTreeWinSize=40
+nmap <leader>nf :NERDTreeFind<CR>
 
-""""""""""""""""""""""""""""""
-" => Statusline
-""""""""""""""""""""""""""""""
-" Always hide the statusline
-set laststatus=2
+"""""""""""""""""""""""""""""""
+"" => Statusline
+"""""""""""""""""""""""""""""""
 
-" Format the statusline
-" set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
+let g:lightline = {
+  \   'colorscheme': 'solarized',
+  \   'active': {
+  \     'left':[ [ 'mode', 'paste' ],
+  \              [ 'gitbranch', 'filename', 'modified' ]
+  \     ]
+  \   },
+	\   'component': {
+	\     'lineinfo': ' %3l:%-2v',
+	\   },
+  \   'component_function': {
+  \   'fileformat': 'LightlineFileformat',
+  \   'fileencoding': 'NoEncoding',
+  \   'filetype': 'LightlineFiletype',
+  \     'gitbranch': 'fugitive#head',
+  \   }
+  \ }
+let g:lightline.separator = {
+	\   'left': '', 'right': ''
+  \}
+let g:lightline.subseparator = {
+	\   'left': '', 'right': '' 
+  \}
 
-function! CurDir()
-  let curdir = substitute(getcwd(), '/Users/adrianvasile/', "~/", "g")
-  return curdir
+let g:lightline.tabline = {
+  \   'left': [ ['tabs'] ],
+  \   'right': [ ['close'] ]
+  \ }
+
+function! LightlineFileformat()
+  return ''
 endfunction
 
-function! HasPaste()
-  if &paste
-    return 'PASTE MODE  '
-  else
-    return ''
-  endif
+function! NoEncoding()
+  return ''
 endfunction
 
+function! LightlineFiletype()
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+endfunction
+
+set guioptions-=e  " Don't use GUI tabline
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FZF
 " """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-nmap <leader>f :Files<CR>
+nmap <leader>f :GFiles<CR>
 nmap <leader>b :Buffers<CR>
 let g:fzf_layout = { 'down': '10split enew' }
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -330,9 +389,6 @@ let g:fzf_layout = { 'down': '10split enew' }
 " FILE NAVIGATION STUFF
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set wildignore+=*.o,*.obj,.git,*.pyc
-
-map <leader>gg :topleft 100 :split Gemfile<cr>
-map <leader>gr :topleft :split config/routes.rb<cr>
 
 function! ShowRoutes()
   " Requires 'scratch' plugin
@@ -350,8 +406,10 @@ function! ShowRoutes()
   " Delete empty trailing line
   :normal dd
 endfunction
+
 map <leader>y "*y
 map <leader>p "*p
+
 map <leader>v :vs<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -377,11 +435,21 @@ let g:UltiSnipsEditSplit="vertical"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ALIGMENT
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-vnoremap <leader>a: :Tab/:<CR>
-vnoremap <leader>ai: :Tab/:\zs<CR>
+" vnoremap <leader>a: :Tab/:<CR>
+vnoremap <leader>a: :Tab/:\zs<CR>
 vnoremap <leader>a= :Tab/=<CR>
+vnoremap <leader>a- :Tab/-><CR>
 vnoremap <leader>a, :Tab/,\zs<CR>
 vnoremap <leader>a> :Tab/=>\zs<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Rails
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap <leader>r :w<CR>:Rails<CR>
+nmap <leader>R :w<CR>:.Rails<CR>
+map <leader>rg :topleft 100 :split Gemfile<cr>
+map <leader>rr :topleft :split config/routes.rb<cr>
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " SURROUND
@@ -395,6 +463,19 @@ map <leader>c' cs"'
 cnoremap dox exec '!chmod +x ' . @%  <CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Fugitive
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>g :Git 
+nnoremap <leader>gb :Git blame<CR> 
+nnoremap <leader>gs :Git<CR> 
+nnoremap <leader>gr :Gread<CR> 
+nnoremap <leader>gcd :Git checkout development<CR> 
+nnoremap <leader>gcm :Git checkout master<CR> 
+nnoremap <leader>gc :Git checkout 
+nnoremap <leader>gcb :Git checkout -b 
+nnoremap <leader>gco :Git commit -m ""<left>
+nnoremap <leader>grc :Git reset HEAD~1 --soft<CR>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MISC
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 inoremap <% <% %><ESC><left><left>i
@@ -407,3 +488,4 @@ au BufRead,BufNewFile *.pde set filetype=arduino
 au BufRead,BufNewFile *.ino set filetype=arduino
 au BufNewFile,BufRead *.ejs set filetype=html
 au BufNewFile,BufRead *.es6 set filetype=javascript
+autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>

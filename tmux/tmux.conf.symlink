@@ -31,6 +31,7 @@ set -g status-right-length 60
 
 # improve colors
 set -g default-terminal "screen-256color"
+set -g terminal-overrides ",xterm-256color:Tc"
 
 # # remove administrative debris (session name, hostname, time) in status bar
 # set -g status-left ''
@@ -51,7 +52,7 @@ bind-key h select-pane -L
 unbind-key l
 bind-key l select-pane -R
 
-bind \ split-window -h
+bind \\ split-window -h
 bind - split-window -v
 unbind '"'
 unbind %

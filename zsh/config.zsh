@@ -14,9 +14,9 @@ plugins=(git bundler osx rake ruby)
 
 autoload -U $ZSH/functions/*(:t)
 
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
+export HISTFILE=~/.zsh_history
+export HISTSIZE=200000
+export SAVEHIST=200000
 
 setopt NO_BG_NICE # don't nice background tasks
 setopt NO_HUP
@@ -53,6 +53,6 @@ bindkey '^[^N' newtab
 bindkey '^?' backward-delete-char
 
 
-ZSH_THEME="powerlevel9k/powerlevel9k"
+export ZSH_THEME="powerlevel9k/powerlevel9k"
 
 # source ~/.iterm2_shell_integration.`basename $SHELL`

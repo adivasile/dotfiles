@@ -67,9 +67,11 @@ export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 #     man "${@}"
 #   }
 
-# export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+export N_PREFIX="$HOME"; [[ :$PATH: == *":$N_PREFIX/n/bin:"* ]] || PATH+=":$N_PREFIX/n/bin"  # Added by n-install (see http://git.io/n-install-repo).
 
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+chruby ruby-2.7.0
