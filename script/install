@@ -4,6 +4,12 @@
 
 set -e
 
+if [ "$(uname -s)" = "Linux" ]
+then
+  sudo apt-get install build-essential
+fi
+
+
 cd "$(dirname $0)"/..
 sh -c "${system/install.sh}"
 # find the installers and run them iteratively

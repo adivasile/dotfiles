@@ -1,6 +1,6 @@
 if [ "$(uname -s)" = "Linux" ]
 then
-  sudo apt-get install tmux
+  sudo apt-get install tmux -y
 else
   brew update
   brew install tmux
