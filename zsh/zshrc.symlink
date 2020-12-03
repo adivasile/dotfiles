@@ -66,7 +66,12 @@ export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 #   }
 
 export N_PREFIX="$HOME"; [[ :$PATH: == *":$N_PREFIX/n/bin:"* ]] || PATH+=":$N_PREFIX/n/bin"  # Added by n-install (see http://git.io/n-install-repo).
+export PATH="${HOME}/.local/bin:${PATH}"
 
 source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Faster keyboard repeat rate
+xset r rate 250 60
