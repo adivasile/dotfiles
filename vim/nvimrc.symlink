@@ -433,7 +433,7 @@ let g:UltiSnipsSnippetsDir="/Users/adrianvasile/.dotfiles/vim/UltiSnips"
 let g:UltiSnipsEditSplit="vertical"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ALIGMENT
+" ALIGMENT Tabular
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vnoremap <leader>a: :Tab/:<CR>
 vnoremap <leader>a: :Tab/:\zs<CR>

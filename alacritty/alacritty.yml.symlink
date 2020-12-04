@@ -103,7 +103,7 @@
 
 # Font configuration
 font:
-  size: 8
+  size: 8.5
   # Normal (roman) font face
   normal:
     family: firacode
