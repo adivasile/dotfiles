@@ -1,0 +1,66 @@
+
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+(package-initialize)
+
+(defvar my-packages '(projectile
+                      clojure-mode
+                      cider
+		      paredit
+		      rainbow-delimiters
+		      dracula-theme))
+
+(dolist (p my-packages)
+  (unless (package-installed-p p)
+    (package-install p)))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(cider clojure-mode projectile)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(load
+ (expand-file-name "ui.el" user-emacs-directory))
+
+(load
+ (expand-file-name "ido.el" user-emacs-directory))
+
+;; Move cursor to end of current line
+;; Insert new line below current line
+;; it will also indent newline
+(global-set-key (kbd "<C-return>") (lambda ()
+                   (interactive)
+                   (end-of-line)
+                   (newline-and-indent)))
+
+;; Move cursor to previous line 
+;; Go to end of the line
+;; Insert new line below current line (So it actually insert new line above with indentation)
+;; it will also indent newline
+(global-set-key (kbd "<C-S-return>") (lambda ()
+                       (interactive)
+                       (previous-line)
+                       (end-of-line)
+                       (newline-and-indent)
+                       ))
+
+(autoload 'enable-paredit-mode "paredit"
+  "Turn on pseudo-structural editing of Lisp code."
+  t)
+(add-hook 'emacs-lisp-mode-hook       'enable-paredit-mode)
+(add-hook 'lisp-mode-hook             'enable-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+(add-hook 'scheme-mode-hook           'enable-paredit-mode)
+(add-hook 'clojure-mode-hook 'enable-paredit-mode)
+
+(require 'rainbow-delimiters)
+(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
