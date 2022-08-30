@@ -1,0 +1,91 @@
+export TOPICS=$HOME/.local/share/chezmoi/topics
+
+# Stash your environment variables in ~/.localrc. This means they'll stay out
+# of your main dotfiles repository (which may be public, like this one), but
+# you'll have access to them in your scripts.
+if [[ -a ~/.localrc ]]
+then
+  source ~/.localrc
+fi
+
+# all of our zsh files
+typeset -U config_files
+config_files=($TOPICS/**/*.zsh)
+
+# load the path files
+for file in ${(M)config_files:#*/path.zsh}
+do
+  source $file
+done
+
+# load everything but the path and completion files
+for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}
+do
+  source $file
+done
+
+# Aliases
+alias reload!='. ~/.zshrc'
+alias vim=nvim
+alias sshconf='vim ~/.ssh/config'
+alias dotfiles='vim -c "cd ~/.dotfiles" ~/.dotfiles'
+alias ll="lsd -alh"
+alias cmd="navi --print | pbcopy"
+alias notes="~/vendor/standard-notes-3.5.18-linux-x86_64.AppImage"
+alias pubkey="more ~/.ssh/id_rsa.pub | pbcopy | echo '=> Public key copied to pasteboard.'"
+
+export EDITOR='nvim'
+
+# Add GHC 7.8.4 to the PATH, via http://ghcformacosx.github.io/
+export GHC_DOT_APP="/Applications/ghc-7.8.4.app"
+if [ -d "$GHC_DOT_APP" ]; then
+    export PATH="${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
+fi
+
+if [ $ITERM_SESSION_ID ]; then
+  export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"$PROMPT_COMMAND";
+fi
+
+export WORDCHARS='*?.~=&;!#$%^(){}<>'
+
+# man() {
+#     env \
+#     LESS_TERMCAP_mb="$(printf "\e[1;31m")" \
+#     LESS_TERMCAP_md="$(printf "\e[1;31m")" \
+#     LESS_TERMCAP_me="$(printf "\e[0m")" \
+#     LESS_TERMCAP_se="$(printf "\e[0m")" \
+#     LESS_TERMCAP_so="$(printf "\e[1;44;33m")" \
+#     LESS_TERMCAP_ue="$(printf "\e[0m")" \
+#     LESS_TERMCAP_us="$(printf "\e[1;32m")" \
+#     man "${@}"
+#   }
+
+export N_PREFIX="$HOME"; [[ :$PATH: == *":$N_PREFIX/n/bin:"* ]] || PATH+=":$N_PREFIX/n/bin"  # Added by n-install (see http://git.io/n-install-repo).
+export PATH="${HOME}/.local/bin:${PATH}"
+
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
+
+# History
+export HISTFILE=~/.zsh_history
+export HISTSIZE=200000
+export SAVEHIST=200000
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Enable Ctrl-x-e to edit command line
+autoload -U edit-command-line
+# Vi style:
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
+
+# Faster keyboard repeat rate
+xset r rate 250 60
+
+eval "$(starship init zsh)"
+source $HOME/.cargo/env
+
+export ES_JAVA_OPTS="-Xms2g -Xmx2g"
+
+
