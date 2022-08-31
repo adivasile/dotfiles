@@ -1,0 +1,6 @@
+---
+
+- block:
+  - name: Install pyenv
+    command: 'curl https://pyenv.run | bash'
+

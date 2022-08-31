@@ -84,7 +84,6 @@ bindkey '^x^e' edit-command-line
 xset r rate 250 60
 
 eval "$(starship init zsh)"
-source $HOME/.cargo/env
 
 export ES_JAVA_OPTS="-Xms2g -Xmx2g"
 

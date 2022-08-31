@@ -1,0 +1,19 @@
+---
+
+- block:
+  - name: Install ZSH
+    package: name=zsh state=present
+
+- block:
+  - name: Setup zsh as default shell
+    become: yes
+    user: 
+      name: adrian
+      shell: /usr/bin/zsh
+
+- block:
+  - name: Install starship zsh prompt
+    become: yes
+    snap: 
+      name: starship
+      state: present
