@@ -79,6 +79,9 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^xe' edit-command-line
 bindkey '^x^e' edit-command-line
+bindkey '^R' history-incremental-search-backward
+bindkey '^P' up-line-or-beginning-search # Up
+bindkey '^N' down-line-or-beginning-search # Down
 
 # Faster keyboard repeat rate
 xset r rate 250 60

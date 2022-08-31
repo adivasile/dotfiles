@@ -3,28 +3,32 @@
   become: yes
   roles:
     - ruby
-    # - neovim
-    # - zsh
-  # vars:
-  #   neovim_pde: false
-  # tasks:
-  #   - name: Install packages
-  #     package:
-  #       name:
-  #         - build-essential
-  #         - git
-  #         - tmux
-  #       state: present
-  #   - name: Install TPM
-  #     become_user: adrian
-  #     git:
-  #       repo: 'https://github.com/tmux-plugins/tpm'
-  #       dest: '~/.tmux/plugins/tpm'
-  #   - name: Download n
-  #     git:
-  #       repo: https://github.com/tj/n.git
-  #       dest: /tmp/n
-  #   - name: Install n
-  #     command: make -C /tmp/n
-  #   - name: Install node
-  #     command: n stable
+    - neovim
+    - zsh
+  vars:
+    neovim_pde: false
+  tasks:
+    - name: Install packages
+      package:
+        name:
+          - build-essential
+          - git
+          - tmux
+          - cmake
+          - pkg-config
+          - libfreetype6-dev
+          - libfontconfig1-dev 
+          - libxcb-xfixes0-dev 
+          - libxkbcommon-dev
+        state: present
+    # - name: Install TPM
+    #   become_user: adrian
+    #   git:
+    #     repo: 'https://github.com/tmux-plugins/tpm'
+    #     dest: '~/.tmux/plugins/tpm'
+    # - name: Download n
+    #   git:
+    #     repo: https://github.com/tj/n.git
+    #     dest: /tmp/n
+    # - name: Install n
+    #   command: make -C /tmp/n
