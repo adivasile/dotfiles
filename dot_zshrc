@@ -1,3 +1,5 @@
+set -o emacs
+
 export TOPICS=$HOME/.local/share/chezmoi/topics
 
 # Stash your environment variables in ~/.localrc. This means they'll stay out
@@ -7,6 +9,26 @@ if [[ -a ~/.localrc ]]
 then
   source ~/.localrc
 fi
+
+
+# History
+export HISTFILE=~/.zsh_history
+export HISTSIZE=200000
+export SAVEHIST=200000
+
+# Enable Ctrl-x-e to edit command line
+autoload -Uz history-search-end
+autoload -U edit-command-line
+# Vi style:
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
+bindkey '^R' history-incremental-search-backward
+bindkey '^P' history-beginning-search-backward # Up
+bindkey '^N' history-beginning-search-forward # Up
+
 
 # all of our zsh files
 typeset -U config_files
@@ -66,28 +88,10 @@ export PATH="${HOME}/.local/bin:${PATH}"
 source /usr/local/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
 
-# History
-export HISTFILE=~/.zsh_history
-export HISTSIZE=200000
-export SAVEHIST=200000
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Enable Ctrl-x-e to edit command line
-autoload -U edit-command-line
-# Vi style:
-zle -N edit-command-line
-bindkey '^xe' edit-command-line
-bindkey '^x^e' edit-command-line
-bindkey '^R' history-incremental-search-backward
-bindkey '^P' up-line-or-beginning-search # Up
-bindkey '^N' down-line-or-beginning-search # Down
-
 # Faster keyboard repeat rate
 xset r rate 250 60
 
 eval "$(starship init zsh)"
 
 export ES_JAVA_OPTS="-Xms2g -Xmx2g"
-
 

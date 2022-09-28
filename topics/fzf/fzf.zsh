@@ -17,3 +17,11 @@ _fzf_complete_git() {
 _fzf_complete_git_post() {
     awk '{print $1}'
 }
+
+if [[ ! "$PATH" == */home/adrian/.fzf/bin* ]]; then
+  PATH="${PATH:+${PATH}:}/home/adrian/.fzf/bin"
+fi
+
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+source /usr/share/doc/fzf/examples/completion.zsh
+
