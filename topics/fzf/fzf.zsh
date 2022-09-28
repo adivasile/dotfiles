@@ -22,6 +22,6 @@ if [[ ! "$PATH" == */home/adrian/.fzf/bin* ]]; then
   PATH="${PATH:+${PATH}:}/home/adrian/.fzf/bin"
 fi
 
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-source /usr/share/doc/fzf/examples/completion.zsh
+source ~/.fzf/shell/key-bindings.zsh
+source ~/.fzf/shell/completion.zsh
 
