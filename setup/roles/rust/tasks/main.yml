@@ -1,0 +1,21 @@
+- block:
+  - name: Check if cargo is installed
+    shell: command -v cargo >/dev/null 2>&1
+    register: cargo_exists
+    ignore_errors: yes
+    become: no
+
+- block:
+  - name: Download Installer
+    when: cargo_exists is failed
+    get_url:
+      url: https://sh.rustup.rs
+      dest: /tmp/sh.rustup.rs
+      mode: '0755'
+      force: 'yes'
+
+- block:
+  - name: install rust/cargo
+    when: cargo_exists is failed
+    shell: /tmp/sh.rustup.rs -y
+    become: no
