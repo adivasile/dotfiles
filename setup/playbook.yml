@@ -1,9 +1,11 @@
 - name: Setup dev env
   hosts: localhost
-  become: yes
   vars:
     neovim_pde: false
   tasks:
+    - name: Debug
+      debug:
+        var: ansible_os_family
     - name: Install TPM
       become_user: adrian
       git:
