@@ -6,17 +6,17 @@
     - name: Debug
       debug:
         var: ansible_os_family
-    - name: Install TPM
-      become_user: adrian
-      git:
-        repo: 'https://github.com/tmux-plugins/tpm'
-        dest: '~/.tmux/plugins/tpm'
-    - name: Download n
-      git:
-        repo: https://github.com/tj/n.git
-        dest: /tmp/n
-    - name: Install n
-      command: make -C /tmp/n
+    # - name: Install TPM
+    #   become_user: adrian
+    #   git:
+    #     repo: 'https://github.com/tmux-plugins/tpm'
+    #     dest: '~/.tmux/plugins/tpm'
+    # - name: Download n
+    #   git:
+    #     repo: https://github.com/tj/n.git
+    #     dest: /tmp/n
+    # - name: Install n
+    #   command: make -C /tmp/n
   roles:
     - base
     - zsh
