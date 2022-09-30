@@ -1,5 +1,6 @@
 - block:
   - name: Debian - Install packages
+    become: yes
     package:
       name:
         - build-essential
@@ -24,10 +25,6 @@
         - tmux
         - cmake
         - pkg-config
-        - libfreetype6-dev
-        - libfontconfig1-dev 
-        - libxcb-xfixes0-dev 
-        - libxkbcommon-dev
         - ripgrep
       state: present
     when: ansible_os_family == 'Darwin'
