@@ -1,12 +1,6 @@
 - name: Setup dev env
   hosts: localhost
   become: yes
-  roles:
-    - ruby
-    - alacritty
-    - rust
-    - neovim
-    - zsh
   vars:
     neovim_pde: false
   tasks:
@@ -36,3 +30,9 @@
         dest: /tmp/n
     - name: Install n
       command: make -C /tmp/n
+  roles:
+    - ruby
+    - alacritty
+    - rust
+    - neovim
+    - zsh
