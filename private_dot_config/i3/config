@@ -50,9 +50,6 @@ bindsym XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-gaps inner 0
-gaps outer 0 
-
 # start a terminal
 bindsym $mod+Return exec alacritty
 bindsym $mod+b exec google-chrome --password-store=gnome
