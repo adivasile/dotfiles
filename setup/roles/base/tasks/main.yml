@@ -16,3 +16,18 @@
         - i3
       state: present
     when: ansible_os_family == 'Debian'
+  - name: Darwin - Install packages
+    package:
+      name:
+        - git
+        - wget
+        - tmux
+        - cmake
+        - pkg-config
+        - libfreetype6-dev
+        - libfontconfig1-dev 
+        - libxcb-xfixes0-dev 
+        - libxkbcommon-dev
+        - ripgrep
+      state: present
+    when: ansible_os_family == 'Darwin'
