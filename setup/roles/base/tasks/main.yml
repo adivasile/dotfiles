@@ -13,4 +13,4 @@
         - libxkbcommon-dev
         - ripgrep
         - i3
-        state: present
+      state: present
