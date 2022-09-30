@@ -17,3 +17,10 @@
     snap: 
       name: starship
       state: present
+    when: ansible_os_family == 'Debian'
+  - name: Install starship zsh prompt
+    become: yes
+    package: 
+      name: starship
+      state: present
+    when: ansible_os_family == 'Darwin'

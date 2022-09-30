@@ -20,7 +20,7 @@
   roles:
     - base
     - zsh
-    - ruby
-    - alacritty
-    - rust
-    - neovim
+    # - ruby
+    # - alacritty
+    # - rust
+    # - neovim
