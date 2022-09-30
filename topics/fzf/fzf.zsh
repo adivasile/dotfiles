@@ -25,7 +25,3 @@ fi
 
 source $TOPICS/fzf/completion.zsh
 source $TOPICS/fzf/key-bindings.zsh
-
-# source ~/.fzf/shell/key-bindings.zsh
-# source ~/.fzf/shell/completion.zsh
-
