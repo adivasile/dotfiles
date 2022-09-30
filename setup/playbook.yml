@@ -23,6 +23,7 @@
           - libxcb-xfixes0-dev 
           - libxkbcommon-dev
           - ripgrep
+          - i3
         state: present
     - name: Install TPM
       become_user: adrian
