@@ -4,21 +4,6 @@
   vars:
     neovim_pde: false
   tasks:
-    - name: Install packages
-      package:
-        name:
-          - build-essential
-          - git
-          - tmux
-          - cmake
-          - pkg-config
-          - libfreetype6-dev
-          - libfontconfig1-dev 
-          - libxcb-xfixes0-dev 
-          - libxkbcommon-dev
-          - ripgrep
-          - i3
-        state: present
     - name: Install TPM
       become_user: adrian
       git:
@@ -31,8 +16,9 @@
     - name: Install n
       command: make -C /tmp/n
   roles:
+    - base
+    - zsh
     - ruby
     - alacritty
     - rust
     - neovim
-    - zsh

@@ -1,0 +1,16 @@
+- block:
+  - name: Install packages
+    package:
+      name:
+        - build-essential
+        - git
+        - tmux
+        - cmake
+        - pkg-config
+        - libfreetype6-dev
+        - libfontconfig1-dev 
+        - libxcb-xfixes0-dev 
+        - libxkbcommon-dev
+        - ripgrep
+        - i3
+        state: present
