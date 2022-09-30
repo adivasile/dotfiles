@@ -10,6 +10,13 @@
     user: 
       name: adrian
       shell: /usr/bin/zsh
+    when: ansible_os_family == 'Debian'
+  - name: Setup zsh as default shell
+    become: yes
+    user: 
+      name: adrian
+      shell: /bin/zsh
+    when: ansible_os_family == 'Darwin'
 
 - block:
   - name: Install starship zsh prompt
