@@ -26,5 +26,6 @@
         - cmake
         - pkg-config
         - ripgrep
+        - gnu-tar
       state: present
     when: ansible_os_family == 'Darwin'
