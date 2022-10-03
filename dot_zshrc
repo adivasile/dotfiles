@@ -88,10 +88,20 @@ export PATH="${HOME}/.local/bin:${PATH}"
 source /usr/local/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
 
-# Faster keyboard repeat rate
-xset r rate 250 60
+case `uname` in
+  Darwin)
+    # commands for OS X go here
+  ;;
+  Linux)
+    # commands for Linux go here
+    # Faster keyboard repeat rate
+    xset r rate 250 60
+  ;;
+  FreeBSD)
+    # commands for FreeBSD go here
+  ;;
+esac
+
 
 eval "$(starship init zsh)"
-
-export ES_JAVA_OPTS="-Xms2g -Xmx2g"
 
