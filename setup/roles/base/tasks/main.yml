@@ -27,7 +27,6 @@
         - pkg-config
         - ripgrep
         - gnu-tar
-        - alacritty
       state: present
   - name: Darwin - Install Alacritty
     homebrew_cask:
