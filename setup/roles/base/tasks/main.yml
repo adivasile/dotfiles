@@ -22,7 +22,7 @@
       state: present
     when: ansible_os_family == 'Debian'
   - name: Darwin - Install packages
-    package:
+    homebrew:
       name:
         - git
         - wget
