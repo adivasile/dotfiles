@@ -27,5 +27,6 @@
         - pkg-config
         - ripgrep
         - gnu-tar
+        - alacritty
       state: present
     when: ansible_os_family == 'Darwin'

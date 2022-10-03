@@ -4,10 +4,8 @@
     register: exists_alacritty
     ignore_errors: yes
     become: no
-
-- block:
   - name: Install alacritty
     when: exists_alacritty is failed
     shell: cargo install alacritty
     become: no
-
+  when: ansible_os_family == 'Debian'
