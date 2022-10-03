@@ -29,4 +29,9 @@
         - gnu-tar
         - alacritty
       state: present
+  - name: Darwin - Install Alacritty
+    homebrew_cask:
+      name:
+        - alacritty
+      state: present
     when: ansible_os_family == 'Darwin'
