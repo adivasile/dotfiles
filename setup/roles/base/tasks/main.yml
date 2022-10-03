@@ -14,6 +14,10 @@
         - libxcb-xfixes0-dev 
         - libxkbcommon-dev
         - ripgrep
+        - software-properties-common
+        - python-pip
+        - python3-dev
+        - python3-pip
         - i3
       state: present
     when: ansible_os_family == 'Debian'
@@ -27,6 +31,7 @@
         - pkg-config
         - ripgrep
         - gnu-tar
+        - neovim
       state: present
   - name: Darwin - Install Alacritty
     homebrew_cask:
