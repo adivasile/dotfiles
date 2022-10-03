@@ -38,12 +38,3 @@
   tags:
     - bootstrap
     - configure
-
-- block:
-    - name: Install vim plugins 
-      command: nvim "+silent! PlugInstall!" +qall!
-      tags: plugins
-  tags:
-    - bootstrap
-    - configure
-    - update
