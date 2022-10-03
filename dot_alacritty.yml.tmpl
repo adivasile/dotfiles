@@ -101,6 +101,17 @@
   # Scrolling distance multiplier.
   #multiplier: 3
 
+{{ if eq .chezmoi.os "darwin" }}
+font:
+  size: 10
+  # Normal (roman) font face
+  normal:
+    family: Fira Code
+  bold:
+    family: Fira Code
+  italic:
+    family: Fira Code
+{{ else if eq .chezmoi.os "linux" }}
 # Font configuration
 font:
   size: 8.5
@@ -111,6 +122,8 @@ font:
     family: firacode
   italic:
     family: firacode
+{{ end }}
+
     # Font family
     #
     # Default:
