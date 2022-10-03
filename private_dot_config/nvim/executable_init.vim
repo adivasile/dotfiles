@@ -33,7 +33,6 @@ Plug 'tpope/vim-rhubarb'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'mtth/scratch.vim'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'ThePrimeagen/harpoon'
 Plug 'universal-ctags/ctags'
 Plug 'sheerun/vim-polyglot'
 Plug 'editorconfig/editorconfig-vim'
@@ -52,24 +51,6 @@ let g:neomake_ruby_enabled_makers = ['rubocop']
 let g:neomake_open_list=0
 autocmd! BufWritePost * Neomake
 autocmd FileType ruby nnoremap <buffer> <leader>lc :!rubocop -a %<CR>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Harpoon
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-lua << EOF
-require("harpoon").setup({
-    global_settings = {
-        save_on_toggle = true,
-        save_on_change = true,
-        enter_on_sendcmd = false,
-    }
-})
-EOF
-
-nnoremap <leader>ha :lua require("harpoon.mark").add_file()<CR>
-nnoremap <leader>hs :lua require("harpoon.ui").toggle_quick_menu()<CR>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
