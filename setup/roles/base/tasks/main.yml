@@ -32,6 +32,7 @@
         - ripgrep
         - gnu-tar
         - neovim
+        - fzf
       state: present
   - name: Darwin - Install Alacritty
     homebrew_cask:
