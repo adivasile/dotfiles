@@ -2,6 +2,7 @@
 
 - block:
   - name: Install ZSH
+    become: yes
     package: name=zsh state=present
 
 - block:
