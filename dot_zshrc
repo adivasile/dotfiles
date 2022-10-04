@@ -83,7 +83,6 @@ export WORDCHARS='*?.~=&;!#$%^(){}<>'
 #   }
 
 export N_PREFIX="$HOME"; [[ :$PATH: == *":$N_PREFIX/n/bin:"* ]] || PATH+=":$N_PREFIX/n/bin"  # Added by n-install (see http://git.io/n-install-repo).
-export PATH="${HOME}/.local/bin:${PATH}"
 
 source /usr/local/share/chruby/chruby.sh
 source /usr/local/share/chruby/auto.sh
@@ -104,4 +103,3 @@ esac
 
 
 eval "$(starship init zsh)"
-
