@@ -23,5 +23,5 @@
 - block:
   - name: Reload shell
     when: cargo_exists is failed
-    shell: source ~/.zshrc
+    shell: . ~/.zshrc
     become: no
