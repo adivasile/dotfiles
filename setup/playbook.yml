@@ -3,20 +3,15 @@
   vars:
     neovim_pde: false
   tasks:
-    - name: Debug
-      debug:
-        var: ansible_os_family
-    - name: Install TPM
-      become_user: adrian
-      git:
-        repo: 'https://github.com/tmux-plugins/tpm'
-        dest: '~/.tmux/plugins/tpm'
     - name: Download n
       git:
         repo: https://github.com/tj/n.git
         dest: /tmp/n
     - name: Install n
-      command: make -C /tmp/n
+      command:
+        cmd: make -C /tmp/n
+        creates: /usr/bin/n
+      when: ansible_os_family == 'Debian'
   roles:
     - base
     - zsh
@@ -24,3 +19,4 @@
     - rust
     - alacritty
     - neovim
+    - tmux

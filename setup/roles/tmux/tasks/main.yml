@@ -1,0 +1,12 @@
+---
+
+- block:
+  - name: Install TPM
+    become_user: adrian
+    git:
+      repo: 'https://github.com/tmux-plugins/tpm'
+      dest: '~/.tmux/plugins/tpm'
+  - name: Install plugins
+    become_user: adrian
+    shell: command -v ~/.tmux/plugins/tpm/bin/install_plugins >/dev/null 2>&1
+
