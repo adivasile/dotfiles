@@ -8,6 +8,7 @@
         repo: https://github.com/tj/n.git
         dest: /tmp/n
     - name: Install n
+      become: yes
       command:
         cmd: make -C /tmp/n
         creates: /usr/bin/n
