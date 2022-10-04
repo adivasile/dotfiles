@@ -19,9 +19,3 @@
     when: cargo_exists is failed
     shell: /tmp/sh.rustup.rs -y
     become: no
-
-- block:
-  - name: Reload shell
-    when: cargo_exists is failed
-    shell: . ~/.zshrc
-    become: no

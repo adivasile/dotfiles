@@ -6,6 +6,6 @@
     become: no
   - name: Install alacritty
     when: exists_alacritty is failed
-    shell: cargo install alacritty
+    shell: ~/.cargo/bin/cargo install alacritty
     become: no
   when: ansible_os_family == 'Debian'
