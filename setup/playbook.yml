@@ -16,6 +16,7 @@
   roles:
     - base
     - zsh
+    - pyenv
     - ruby
     - rust
     - alacritty

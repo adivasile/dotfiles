@@ -2,5 +2,9 @@
 
 - block:
   - name: Install pyenv
-    command: 'curl https://pyenv.run | bash'
+    become_user: adrian
+    git:
+      repo: https://github.com/pyenv/pyenv.git
+      dest: '~/.pyenv'
+      depth: 1
 
