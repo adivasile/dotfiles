@@ -20,14 +20,17 @@
     when: ansible_os_family == 'Darwin'
 
 - block:
-  - name: Install starship zsh prompt
-    become: yes
-    snap: 
-      name: starship
-      state: present
-    when: ansible_os_family == 'Debian'
-  - name: Install starship zsh prompt
-    package: 
-      name: starship
-      state: present
-    when: ansible_os_family == 'Darwin'
+  - name: Install Oh-my-zsh
+    become_user: adrian
+    git:
+      repo: https://github.com/ohmyzsh/ohmyzsh.git
+      dest: '~/.oh-my-zsh'
+      depth: 1
+
+- block:
+  - name: Install powerlevel10k
+    become_user: adrian
+    git:
+      repo: https://github.com/romkatv/powerlevel10k.git
+      dest: '~/.oh-my-zsh/custom/themes/powerlevel10k'
+      depth: 1
