@@ -28,10 +28,10 @@
  )
 
 (load
- (expand-file-name "ui.el" user-emacs-directory))
+ (expand-file-name "ui.el" "{{ .chezmoi.sourceDir }}/dot_emacs.d"))
 
 (load
- (expand-file-name "ido.el" user-emacs-directory))
+ (expand-file-name "ido.el" "{{ .chezmoi.sourceDir }}/dot_emacs.d"))
 
 ;; Move cursor to end of current line
 ;; Insert new line below current line
