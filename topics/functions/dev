@@ -1,0 +1,32 @@
+#!/bin/zsh
+
+# source $ZSH/functions/c
+
+if [ $# -eq 0 ] # if there are no arguments, start a session in the current directory
+  then
+    project=${PWD##*/}  
+  else # consider first argument as session default dir
+    project=$1
+
+    cd $PROJECTS/$project
+
+    if [ $? -eq 1 ]
+      then
+        exit 1
+    fi
+fi
+
+tmux ls | cut -d ' ' -f 1 | cut -d ':' -f 1 | grep $project # check if there is a session with the same name already running
+
+if [ $? -eq 0 ] # this means there's already a tmux session with this name running
+  then 
+    tmux a -t $project
+  else # start a new session
+    tmux new-session -s $project \; \
+      send-keys 'vim' C-m \; \
+      new-window \; \
+      split-window -h \; \
+      send-keys 'rails s' C-m \; \
+      split-window -v \; \
+      send-keys './bin/webpack-dev-server' C-m
+fi

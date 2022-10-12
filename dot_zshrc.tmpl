@@ -1,6 +1,7 @@
 set -o emacs
 
-export TOPICS=$HOME/.local/share/chezmoi/topics
+export TOPICS={{ .chezmoi.sourceDir }}/topics
+export PROJECTS=~/Code
 
 # Stash your environment variables in ~/.localrc. This means they'll stay out
 # of your main dotfiles repository (which may be public, like this one), but
@@ -16,23 +17,10 @@ export HISTFILE=~/.zsh_history
 export HISTSIZE=200000
 export SAVEHIST=200000
 
-# Enable Ctrl-x-e to edit command line
-autoload -Uz history-search-end
-autoload -U edit-command-line
-# Vi style:
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-zle -N edit-command-line
-bindkey '^xe' edit-command-line
-bindkey '^x^e' edit-command-line
-bindkey '^R' history-incremental-search-backward
-bindkey '^P' history-beginning-search-backward # Up
-bindkey '^N' history-beginning-search-forward # Up
-
-
 # all of our zsh files
 typeset -U config_files
 config_files=($TOPICS/**/*.zsh)
+
 
 # load the path files
 for file in ${(M)config_files:#*/path.zsh}
@@ -40,29 +28,27 @@ do
   source $file
 done
 
+autoload -U compinit
+compinit
+autoload -U zmv
+
 # load everything but the path and completion files
 for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}
 do
   source $file
 done
 
-# Aliases
-alias reload!='. ~/.zshrc'
-alias vim=nvim
-alias sshconf='vim ~/.ssh/config'
-alias dotfiles='vim -c "cd ~/.dotfiles" ~/.dotfiles'
-alias ll="ls -alh"
-alias cmd="navi --print | pbcopy"
-alias notes="~/vendor/standard-notes-3.5.18-linux-x86_64.AppImage"
-alias pubkey="more ~/.ssh/id_rsa.pub | pbcopy | echo '=> Public key copied to pasteboard.'"
+# load every completion after autocomplete loads
+for file in ${(M)config_files:#*/completion.zsh}
+do
+  source $file
+done
+
+unset config_files
 
 export EDITOR='nvim'
 
-# Add GHC 7.8.4 to the PATH, via http://ghcformacosx.github.io/
-export GHC_DOT_APP="/Applications/ghc-7.8.4.app"
-if [ -d "$GHC_DOT_APP" ]; then
-    export PATH="${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
-fi
+export PATH="{{ .chezmoi.sourceDir }}/bin:${PATH}"
 
 if [ $ITERM_SESSION_ID ]; then
   export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"$PROMPT_COMMAND";
