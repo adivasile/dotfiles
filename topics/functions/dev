@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-# source $ZSH/functions/c
-
 if [ $# -eq 0 ] # if there are no arguments, start a session in the current directory
   then
     project=${PWD##*/}  
