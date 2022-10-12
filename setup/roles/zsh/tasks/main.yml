@@ -4,6 +4,13 @@
   - name: Install ZSH
     become: yes
     package: name=zsh state=present
+    when: ansible_os_family == 'Debian'
+
+- block:
+  - name: Install ZSH
+    become: no
+    package: name=zsh state=present
+    when: ansible_os_family == 'Darwin'
 
 - block:
   - name: Setup zsh as default shell
