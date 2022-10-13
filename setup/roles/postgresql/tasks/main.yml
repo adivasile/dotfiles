@@ -5,20 +5,62 @@
     - postgresql
     - postgresql-contrib
 
+- name: Install Python packages
+  become: yes
+  pip:
+    name: psycopg2-binary
+    state: present
+
+- name: Collect PostgreSQL version and extensions
+  become: yes
+  register: pg_info
+  community.postgresql.postgresql_info:
+    filter: ver*
+
 - name: "Find out if PostgreSQL is initialized"
   ansible.builtin.stat:
-    path: "{{ pg_hba_path }}"
+    path: "/etc/postgresql/{{ pg_info['version']['major'] }}/main/pg_hba.conf"
   register: postgres_data
 
-- name: Debug
-  debug: "{{ postgres_data }}"
+- name: "Initialize PostgreSQL"
+  shell: "postgresql-setup initdb"
+  when: not postgres_data.stat.exists
 
-# - name: "Initialize PostgreSQL"
-#   shell: "postgresql-setup initdb"
-#   when: not postgres_data.stat.exists
+- name: "Start and enable services"
+  become: yes
+  service: "name={{ item }} state=started enabled=yes"
+  with_items:
+    - postgresql
 
-# - name: "Start and enable services"
-#   become: yes
-#   service: "name={{ item }} state=started enabled=yes"
-#   with_items:
-#     - postgresql
+- name: "Create app database"
+  postgresql_db:
+    state: present
+    name: "{{ db_user }}"
+  become: yes
+
+- name: "Create db user"
+  postgresql_user:
+    state: present
+    name: "{{ db_user }}"
+    role_attr_flags: "SUPERUSER"
+  become: yes
+
+- name: "Grant db user access to app db"
+  postgresql_privs:
+    type: database
+    database: "{{ db_user }}"
+    roles: "{{ db_user }}"
+    grant_option: yes
+    privs: all
+  become: yes
+
+- name: Grant trust access from localhost.
+  become: yes
+  notify: restart postgres
+  postgresql_pg_hba:
+    dest: "/etc/postgresql/{{ pg_info['version']['major'] }}/main/pg_hba.conf"
+    contype: local
+    users: db_user
+    source: local
+    method: trust
+

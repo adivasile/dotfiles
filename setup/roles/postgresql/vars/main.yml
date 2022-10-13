@@ -1,4 +1,2 @@
 ---
 db_user: postgres
-db_password:
-pg_hba_path: "/var/lib/pgsql/data/pg_hba.conf"
