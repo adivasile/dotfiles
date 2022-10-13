@@ -47,7 +47,7 @@
   postgresql_pg_hba:
     dest: "/etc/postgresql/{{ pg_info['version']['major'] }}/main/pg_hba.conf"
     contype: local
-    users: db_user
+    users: "{{ db_user }}"
     source: local
     method: trust
 
