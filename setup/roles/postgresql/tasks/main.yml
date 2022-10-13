@@ -4,6 +4,14 @@
   with_items:
     - postgresql
     - postgresql-contrib
+  when: ansible_os_family == 'Debian'
+
+- name: Install packages
+  package: "name={{ item }} state=present"
+  with_items:
+    - postgresql
+    - postgresql-contrib
+  when: ansible_os_family == 'Darwin'
 
 - name: Install Python packages
   become: yes
