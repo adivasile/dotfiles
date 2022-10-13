@@ -13,6 +13,7 @@
 
 - name: Collect PostgreSQL version and extensions
   become: yes
+  become_user: postgres
   register: pg_info
   community.postgresql.postgresql_info:
     filter: ver*
@@ -32,26 +33,11 @@
   with_items:
     - postgresql
 
-- name: "Create app database"
-  postgresql_db:
-    state: present
-    name: "{{ db_user }}"
-  become: yes
-
 - name: "Create db user"
   postgresql_user:
     state: present
     name: "{{ db_user }}"
     role_attr_flags: "SUPERUSER"
-  become: yes
-
-- name: "Grant db user access to app db"
-  postgresql_privs:
-    type: database
-    database: "{{ db_user }}"
-    roles: "{{ db_user }}"
-    grant_option: yes
-    privs: all
   become: yes
 
 - name: Grant trust access from localhost.
@@ -63,4 +49,19 @@
     users: db_user
     source: local
     method: trust
+
+- name: "Create app database"
+  postgresql_db:
+    state: present
+    name: "{{ db_user }}"
+  become: yes
+
+- name: "Grant db user access to app db"
+  postgresql_privs:
+    type: database
+    database: "{{ db_user }}"
+    roles: "{{ db_user }}"
+    grant_option: yes
+    privs: all
+  become: yes
 
