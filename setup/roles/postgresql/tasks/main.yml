@@ -18,6 +18,12 @@
     name: psycopg2-binary
     state: present
 
+
+- name: Start PG on macos
+  shell:
+    cmd: brew services start postgresql
+  when: ansible_os_family == 'Darwin'
+
 - name: Collect PostgreSQL version and extensions
   become: yes
   become_user: postgres
