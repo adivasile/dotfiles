@@ -8,6 +8,10 @@
   register: meslo_exists
   ignore_errors: yes
 
+- name: Debug
+  debug:
+    var: fonts_dir
+
 - name: Download Meslo Regular
   when: meslo_exists is failed
   get_url:

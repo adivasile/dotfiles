@@ -1,2 +1,4 @@
 ---
-fonts_dir: "{{ lookup('env', 'HOME') }}/.local/share/fonts"
+fonts_dir_debian: "{{ lookup('env', 'HOME') }}/.local/share/fonts"
+fonts_dir_darwin: "{{ lookup('env', 'HOME') }}/.local/share/fonts"
+fonts_dir: "{{ lookup('vars', 'fonts_dir'+ansible_os_family|lower, default=fonts_dir_debian) }}"
