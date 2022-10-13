@@ -1,0 +1,33 @@
+- name: Check fonts
+  file:
+    path: "{{ fonts_dir }}"
+    state: directory
+
+- name: Meslo exists
+  shell: "ls {{ fonts_dir }}/MesloLGS*NF*Regular*"
+  register: meslo_exists
+  ignore_errors: yes
+
+- name: Download Meslo Regular
+  when: meslo_exists is failed
+  get_url:
+    src: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
+    dest: "{{ fonts_dir }}/MesloLGS NF Regular.ttf"
+
+- name: Download Meslo Italic
+  when: meslo_exists is failed
+  get_url:
+    src: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
+    dest: "{{ fonts_dir }}/MesloLGS NF Italic.ttf"
+
+- name: Download Meslo Bold
+  when: meslo_exists is failed
+  get_url:
+    src: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
+    dest: "{{ fonts_dir }}/MesloLGS NF Bold.ttf"
+
+- name: Download Meslo Bold Italic
+  when: meslo_exists is failed
+  get_url:
+    src: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+    dest: "{{ fonts_dir }}/MesloLGS NF Bold Italic.ttf"

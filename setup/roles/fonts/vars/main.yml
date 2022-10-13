@@ -1,0 +1,2 @@
+---
+fonts_dir: "{{ lookup('env', 'HOME') }}/.local/share/fonts"
