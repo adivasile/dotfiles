@@ -3,14 +3,12 @@
   package: "name={{ item }} state=present"
   with_items:
     - postgresql
-    - postgresql-contrib
-  when: ansible_os_family == 'Debian'
 
 - name: Install packages
   package: "name={{ item }} state=present"
   with_items:
-    - postgresql
-  when: ansible_os_family == 'Darwin'
+    - postgresql-contrib
+  when: ansible_os_family == 'Debian'
 
 - name: Install Python packages
   become: yes
@@ -18,18 +16,10 @@
     name: psycopg2-binary
     state: present
 
-
 - name: Start PG on macos
   shell:
     cmd: brew services start postgresql
   when: ansible_os_family == 'Darwin'
-
-- name: Collect PostgreSQL version and extensions
-  become: yes
-  become_user: postgres
-  register: pg_info
-  community.postgresql.postgresql_info:
-    filter: ver*
 
 - name: Get path of pg_hba conf
   register: pg_hba_path
@@ -37,10 +27,6 @@
   become_user: postgres
   shell:
     cmd: "psql -U postgres -t -P format=unaligned -c 'show hba_file';"
-
-- name: Debug
-  debug:
-    var: pg_hba_path
 
 - name: "Find out if PostgreSQL is initialized"
   ansible.builtin.stat:
@@ -69,7 +55,7 @@
   become: yes
   notify: restart postgres
   postgresql_pg_hba:
-    dest: "/etc/postgresql/{{ pg_info['version']['major'] }}/main/pg_hba.conf"
+    dest: pg_hba_path
     contype: local
     users: "{{ db_user }}"
     source: local
