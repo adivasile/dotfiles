@@ -1,13 +1,15 @@
-- name: Install packages
+- name: "[Linux] Install packages"
   become: yes
   package: "name={{ item }} state=present"
+  notify: start postgres
   with_items:
     - postgresql
     - postgresql-contrib
   when: ansible_os_family == 'Debian'
 
-- name: Install packages
+- name: "[Darwin] Install packages"
   package: "name={{ item }} state=present"
+  notify: start postgres
   with_items:
     - postgresql
   when: ansible_os_family == 'Darwin'
@@ -18,11 +20,6 @@
     name: psycopg2-binary
     state: present
 
-- name: Start PG on macos
-  shell:
-    cmd: brew services start postgresql
-  when: ansible_os_family == 'Darwin'
-
 - name: Get path of pg_hba conf
   register: pg_hba_path
   become: yes
@@ -30,20 +27,9 @@
   shell:
     cmd: "psql -U postgres -t -P format=unaligned -c 'show hba_file';"
 
-- name: "Find out if PostgreSQL is initialized"
-  ansible.builtin.stat:
-    path: "{{ pg_hba_path }}"
-  register: postgres_data
-
-- name: "Initialize PostgreSQL"
-  shell: "postgresql-setup initdb"
-  when: not postgres_data.stat.exists
-
-- name: "Start and enable services"
-  become: yes
-  service: "name={{ item }} state=started enabled=yes"
-  with_items:
-    - postgresql
+- name: Debug
+  debug:
+    var: pg_hba_path
 
 - name: "Create db user"
   postgresql_user:
@@ -55,9 +41,10 @@
 
 - name: Grant trust access from localhost.
   become: yes
-  notify: restart postgres
+  become_method: sudo
+  notify: "restart postgres"
   postgresql_pg_hba:
-    dest: pg_hba_path
+    dest: "{{ pg_hba_path['stdout'] }}"
     contype: local
     users: "{{ db_user }}"
     source: local

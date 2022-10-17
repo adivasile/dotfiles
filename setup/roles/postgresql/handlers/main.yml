@@ -1,3 +1,23 @@
-  - name: restart postgres
-    become: yes
-    service: name=postgresql state=restarted  
+- name: "[Linux] Restart Postgres"
+  become: yes
+  service: name=postgresql state=restarted  
+  when: ansible_os_family == 'Debian'
+  listen: "restart postgres"
+
+- name: "[Darwin] Restart Postgres"
+  shell:
+    cmd: brew services restart postgresql
+  when: ansible_os_family == 'Darwin'
+  listen: "restart postgres"
+
+- name: "[Linux] start Postgres"
+  become: yes
+  service: name=postgresql state=started  
+  when: ansible_os_family == 'Debian'
+  listen: "start postgres"
+
+- name: "[Darwin] start Postgres"
+  shell:
+    cmd: brew services start postgresql
+  when: ansible_os_family == 'Darwin'
+  listen: "start postgres"
