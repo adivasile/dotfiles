@@ -1,0 +1,61 @@
+- name: Install packages
+  become: yes
+  package: "name={{ item }} state=present"
+  notify: start postgres
+  with_items:
+    - postgresql
+    - postgresql-contrib
+
+- name: Install Python packages
+  become: yes
+  pip:
+    name: psycopg2-binary
+    state: present
+
+- name: Get path of pg_hba conf
+  register: pg_hba_path
+  become: yes
+  become_user: postgres
+  shell:
+    cmd: "psql -U postgres -t -P format=unaligned -c 'show hba_file';"
+
+- name: Debug
+  debug:
+    var: pg_hba_path
+
+- name: "Create db user"
+  postgresql_user:
+    state: present
+    name: "{{ db_user }}"
+    role_attr_flags: "SUPERUSER"
+  become: yes
+  become_user: postgres
+
+- name: Grant trust access from localhost.
+  become: yes
+  become_method: sudo
+  notify: "restart postgres"
+  postgresql_pg_hba:
+    dest: "{{ pg_hba_path['stdout'] }}"
+    contype: local
+    users: "{{ db_user }}"
+    source: local
+    method: trust
+
+- name: "Create app database"
+  postgresql_db:
+    state: present
+    name: "{{ db_user }}"
+  become: yes
+  become_user: postgres
+
+- name: "Grant db user access to app db"
+  postgresql_privs:
+    type: database
+    database: "{{ db_user }}"
+    roles: "{{ db_user }}"
+    grant_option: yes
+    privs: all
+  become: yes
+  become_user: postgres
+

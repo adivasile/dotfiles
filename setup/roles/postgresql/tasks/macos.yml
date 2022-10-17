@@ -1,0 +1,3 @@
+- name: Skipping on MacOS
+  debug:
+    message: Skipped on MacOS in favor of using Postgres.app - https://postgresapp.com/
