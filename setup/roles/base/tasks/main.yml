@@ -33,12 +33,12 @@
         - gnu-tar
         - neovim
         - fzf
-        - emacs
       state: present
     when: ansible_os_family == 'Darwin'
   - name: Darwin - Install Alacritty
     homebrew_cask:
       name:
         - alacritty
+        - emacs
       state: present
     when: ansible_os_family == 'Darwin'
