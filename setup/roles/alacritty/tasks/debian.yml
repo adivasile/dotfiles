@@ -1,0 +1,10 @@
+- name: Check if alacritty is installed
+  shell: command -v alacritty -V >/dev/null 2>&1
+  register: exists_alacritty
+  ignore_errors: yes
+  become: no
+
+- name: Install alacritty
+  when: exists_alacritty is failed
+  shell: ~/.cargo/bin/cargo install alacritty
+  become: no

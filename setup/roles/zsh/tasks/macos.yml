@@ -1,0 +1,9 @@
+- name: Install ZSH
+  become: no
+  package: name=zsh state=present
+
+- name: Setup zsh as default shell
+  become: yes
+  user: 
+    name: adrian
+    shell: /bin/zsh

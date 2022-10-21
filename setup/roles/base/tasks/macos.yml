@@ -1,0 +1,18 @@
+- name: Darwin - Install packages
+  homebrew:
+    name:
+      - git
+      - wget
+      - tmux
+      - cmake
+      - pkg-config
+      - ripgrep
+      - gnu-tar
+      - fzf
+      - emacs
+    state: present
+- name: Darwin - Install Alacritty
+  homebrew_cask:
+    name:
+      - alacritty
+    state: present

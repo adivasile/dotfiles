@@ -1,60 +1,52 @@
 ---
-- block:
-  - name: Check if ruby-install is installed
-    shell: command -v ruby-install -h >/dev/null 2>&1
-    register: exists_ruby_install
-    ignore_errors: yes
-    become: no
+- name: Check if ruby-install is installed
+  shell: command -v ruby-install -h >/dev/null 2>&1
+  register: exists_ruby_install
+  ignore_errors: yes
+  become: no
 
-- block:
-  - name: Check if chruby is installed
-    shell: bash -c "source /usr/local/share/chruby/chruby.sh; chruby -h"  >/dev/null 2>&1
-    register: exists_chruby
-    ignore_errors: yes
-    become: no
+- name: Check if chruby is installed
+  shell: bash -c "source /usr/local/share/chruby/chruby.sh; chruby -h"  >/dev/null 2>&1
+  register: exists_chruby
+  ignore_errors: yes
+  become: no
 
-- block:
-  - name: Download ruby-install
-    command:
-      cmd: wget https://github.com/postmodern/ruby-install/archive/v0.8.5.tar.gz -O ruby-install-0.8.5.tar.gz 
-      chdir: /tmp/
-      creates: /tmp/ruby-install-0.8.5.tar.gz 
-    when: exists_ruby_install.rc != 0
+- name: Download ruby-install
+  command:
+    cmd: wget https://github.com/postmodern/ruby-install/archive/v0.8.5.tar.gz -O ruby-install-0.8.5.tar.gz 
+    chdir: /tmp/
+    creates: /tmp/ruby-install-0.8.5.tar.gz 
+  when: exists_ruby_install.rc != 0
 
-- block:
-  - name: Untar ruby-install
-    unarchive:
-      src: /tmp/ruby-install-0.8.5.tar.gz 
-      dest: /tmp
-    when: exists_ruby_install.rc != 0
+- name: Untar ruby-install
+  unarchive:
+    src: /tmp/ruby-install-0.8.5.tar.gz 
+    dest: /tmp
+  when: exists_ruby_install.rc != 0
 
-- block:
-  - name: Run 'install' target as root
-    make:
-      chdir: /tmp/ruby-install-0.8.5
-      target: install
-    become: yes
-    when: exists_ruby_install.rc != 0
+- name: Run 'install' target as root
+  make:
+    chdir: /tmp/ruby-install-0.8.5
+    target: install
+  become: yes
+  when: exists_ruby_install.rc != 0
 
-- block:
-  - name: Download chruby
-    command:
-      cmd: wget https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz -O chruby-0.3.9.tar.gz
-      chdir: /tmp/
-      creates: chruby-0.3.9.tar.gz
-    when: exists_chruby.rc != 0
+- name: Download chruby
+  command:
+    cmd: wget https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz -O chruby-0.3.9.tar.gz
+    chdir: /tmp/
+    creates: chruby-0.3.9.tar.gz
+  when: exists_chruby.rc != 0
 
-- block:
-  - name: Untar ruby-install
-    unarchive:
-      src: /tmp/chruby-0.3.9.tar.gz
-      dest: /tmp
-    when: exists_chruby.rc != 0
+- name: Untar ruby-install
+  unarchive:
+    src: /tmp/chruby-0.3.9.tar.gz
+    dest: /tmp
+  when: exists_chruby.rc != 0
 
-- block:
-  - name: Run 'install' target as root
-    make:
-      chdir: /tmp/chruby-0.3.9
-      target: install
-    become: yes
-    when: exists_chruby.rc != 0
+- name: Run 'install' target as root
+  make:
+    chdir: /tmp/chruby-0.3.9
+    target: install
+  become: yes
+  when: exists_chruby.rc != 0
