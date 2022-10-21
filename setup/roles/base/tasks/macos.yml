@@ -9,10 +9,10 @@
       - ripgrep
       - gnu-tar
       - fzf
-      - emacs
     state: present
 - name: Darwin - Install Alacritty
   homebrew_cask:
     name:
       - alacritty
+      - emacs
     state: present
