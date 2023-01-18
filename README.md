@@ -10,9 +10,11 @@ chezmoi init git@github.com:adivasile/dotfiles.git
 ```
 3. [Install Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
-4. Run ansible playbook
+4. `cd` into setup folder and run ansible playbook
 ```sh
-  ansible-playbook setup/playbook.yml -K
+  cd setup/
+
+  ansible-playbook playbook.yml -K
 ```
 5. Apply chezmoi dotfiles
 

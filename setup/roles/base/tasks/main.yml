@@ -1,44 +1,7 @@
-- block:
-  - name: Debian - Install packages
-    become: yes
-    package:
-      name:
-        - build-essential
-        - git
-        - wget
-        - tmux
-        - cmake
-        - pkg-config
-        - libfreetype6-dev
-        - libfontconfig1-dev 
-        - libxcb-xfixes0-dev 
-        - libxkbcommon-dev
-        - ripgrep
-        - software-properties-common
-        - python3-dev
-        - python3-pip
-        - emacs
-        - i3
-      state: present
-    when: ansible_os_family == 'Debian'
-  - name: Darwin - Install packages
-    homebrew:
-      name:
-        - git
-        - wget
-        - tmux
-        - cmake
-        - pkg-config
-        - ripgrep
-        - gnu-tar
-        - neovim
-        - fzf
-      state: present
-    when: ansible_os_family == 'Darwin'
-  - name: Darwin - Install Alacritty
-    homebrew_cask:
-      name:
-        - alacritty
-        - emacs
-      state: present
-    when: ansible_os_family == 'Darwin'
+---
+
+- include: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include: macos.yml
+  when: ansible_os_family == 'Darwin'

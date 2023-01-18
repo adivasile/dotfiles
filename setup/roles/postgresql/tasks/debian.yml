@@ -19,10 +19,6 @@
   shell:
     cmd: "psql -U postgres -t -P format=unaligned -c 'show hba_file';"
 
-- name: Debug
-  debug:
-    var: pg_hba_path
-
 - name: "Create db user"
   postgresql_user:
     state: present

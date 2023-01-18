@@ -1,23 +1,11 @@
 - name: Setup dev env
   hosts: localhost
-  vars:
-    neovim_pde: false
-  tasks:
-    - name: Download n
-      git:
-        repo: https://github.com/tj/n.git
-        dest: /tmp/n
-    - name: Install n
-      become: yes
-      command:
-        cmd: make -C /tmp/n
-        creates: /usr/bin/n
-      when: ansible_os_family == 'Debian'
   roles:
     - base
     - zsh
     - pyenv
     - ruby
+    - n
     - fonts
     - rust
     - alacritty

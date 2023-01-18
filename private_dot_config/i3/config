@@ -204,5 +204,4 @@ bar {
 
 set $refresh_i3status killall -SIGUSR1 
 
-exec copyq
 exec nitrogen --restore &
