@@ -9,10 +9,27 @@
       - ripgrep
       - gnu-tar
       - fzf
+      - coreutils
+      - fd
     state: present
 - name: Darwin - Install Alacritty
   homebrew_cask:
     name:
       - alacritty
-      - emacs
     state: present
+
+- name: Darwin - Tap Emacs cask
+  homebrew_tap:
+    name: 'railwaycat/emacsmacport'
+      - alacritty
+
+- name: Darwin - Install emacs
+  homebrew:
+    name: emacs-mac
+    install_options: with-modules
+
+- name: Darwin - Symlink Emacs.app
+  file:
+    src: /usr/local/opt/emacs-plus/Emacs.app
+    dest: /Applications/Emacs.app
+    state: link

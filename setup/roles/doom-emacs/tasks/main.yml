@@ -1,0 +1,12 @@
+---
+- name: Check if doom-emacs is installed
+  shell: command -v cat ~/.emacs.d/.doomrc >/dev/null 2>&1
+  register: exists_doom_emacs
+  ignore_errors: yes
+  become: no
+
+
+- name: Clone doom-emacs
+  git:
+    repo: https://github.com/tj/n.git
+    dest: /tmp/n

@@ -204,4 +204,4 @@ bar {
 
 set $refresh_i3status killall -SIGUSR1 
 
-exec nitrogen --restore &
+exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
