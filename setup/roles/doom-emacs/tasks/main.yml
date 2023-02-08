@@ -5,8 +5,7 @@
   ignore_errors: yes
   become: no
 
-
 - name: Clone doom-emacs
   git:
-    repo: https://github.com/tj/n.git
-    dest: /tmp/n
+    repo: https://github.com/hlissner/doom-emacs
+    dest: ~/.emacs.d
