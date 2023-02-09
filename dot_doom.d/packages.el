@@ -50,3 +50,4 @@
 ;(unpin! t)
 
 (package! eterm-256color)
+(package! visual-fill-column)
