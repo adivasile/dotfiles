@@ -32,15 +32,12 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -74,18 +71,16 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+;; (load "~/.doom.d/org-mode.el")
+;;
+(add-to-list 'load-path "~/.doom.d/my-config")
+
+(require 'my-ui)
+(require 'my-org)
+(require 'my-vterm)
+(require 'my-keybindings)
+
 (setq projectile-project-search-path '("~/Code/" . 1))
-
-(use-package eterm-256color
-  :hook (term-mode . eterm-256color-mode))
-
-(use-package vterm
-  :commands vterm
-  :config
-  (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")  ;; Set this to match your custom shell prompt
-  (setq vterm-shell "zsh")                       ;; Set this to customize the shell to launch
-  (setq vterm-max-scrollback 10000))
-
 
 (eval-after-load 'doom'
   (defun doom/find-file-in-private-config ()
@@ -93,52 +88,5 @@
     (interactive)
     (doom-project-find-file "~/.local/share/chezmoi/dot_doom.d")))
 
-(setq lsp-solargraph-use-bundler 't)
-
-;; Org mode stuff
-(use-package org
-  :hook (org-mode . org-mode-setup)
-  :config
-  (defun org-mode-setup ()
-    "Setup org mode custom configs"
-    (setq org-ellipsis " ▾")
-    (setq org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿"))
-    (add-hook 'org-mode-hook 'variable-pitch-mode)
-    (add-hook 'org-mode-hook 'visual-line-mode)
-    (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
-    (org-font-setup))
-
-  (defun org-mode-visual-fill ()
-    (setq visual-fill-column-width 120
-          visual-fill-column-center-text t)
-    (visual-fill-column-mode 1))
-
-  (use-package visual-fill-column
-    :hook (org-mode . org-mode-visual-fill))
-
-
-  (defun org-font-setup ()
-    ;; Replace list hyphen with dot
-    (font-lock-add-keywords 'org-mode
-                            '(("^ *\\([-]\\) "
-                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
-    ;; Set faces for heading levels
-    (dolist (face '((org-level-1 . 1.2)
-                    (org-level-2 . 1.1)
-                    (org-level-3 . 1.05)
-                    (org-level-4 . 1.0)
-                    (org-level-5 . 1.1)
-                    (org-level-6 . 1.1)
-                    (org-level-7 . 1.1)
-                    (org-level-8 . 1.1)))
-      (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
-
-    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-    (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-table nil   :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)))
+(after! 'lsp'
+  (setq lsp-solargraph-use-bundler 't))
