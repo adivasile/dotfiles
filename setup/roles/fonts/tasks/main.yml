@@ -8,6 +8,11 @@
   register: meslo_exists
   ignore_errors: yes
 
+- name: Cantarell exists
+  shell: "ls {{ fonts_dir }}/Cantarell-*"
+  register: cantarell_exists
+  ignore_errors: yes
+
 - name: Download Meslo Regular
   when: meslo_exists is failed
   get_url:
@@ -31,3 +36,16 @@
   get_url:
     url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
     dest: "{{ fonts_dir }}/MesloLGS NF Bold Italic.ttf"
+
+
+- name: Download Cantarell font family
+  when: cantarell_exists is failed
+  get_url:
+    url: https://fonts.google.com/download?family=Cantarell
+    dest: "{{ fonts_dir }}/cantarell_family.zip"
+
+- name: Unzip Cantarell
+  when: cantarell_exists is failed
+  unarchive:
+    src: "{{ fonts_dir }}/cantarell_family.zip"
+    dest: "{{ fonts_dir }}"
