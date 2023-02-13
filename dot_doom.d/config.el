@@ -78,8 +78,10 @@
 (require 'my-ui)
 (require 'my-org)
 (require 'my-vterm)
+(require 'my-org-roam)
 (require 'my-keybindings)
 
+(setq system-time-locale "C")
 (setq projectile-project-search-path '("~/Code/" . 1))
 
 (eval-after-load 'doom'

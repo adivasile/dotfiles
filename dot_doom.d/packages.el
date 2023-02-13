@@ -49,5 +49,5 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
-(package! eterm-256color)
 (package! visual-fill-column)
+(package! org-roam)
