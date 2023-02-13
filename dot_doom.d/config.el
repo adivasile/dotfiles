@@ -73,6 +73,11 @@
 ;; they are implemented.
 ;; (load "~/.doom.d/org-mode.el")
 ;;
+(defmacro advice-helper (fnc)
+  "Return function that ignores its arguments and invokes FNC."
+  `(lambda (&rest _rest)
+     (funcall ,fnc)))
+
 (add-to-list 'load-path "~/.doom.d/my-config")
 
 (require 'my-ui)

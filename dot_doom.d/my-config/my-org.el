@@ -13,7 +13,13 @@
     (add-hook 'org-mode-hook 'visual-line-mode)
     (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
     (org-font-setup)
-    (org-agenda-setup))
+    (org-agenda-setup)
+    (org-habit-setup))
+
+  (defun org-habit-setup ()
+    (require 'org-habit)
+    (add-to-list 'org-modules 'org-habit)
+    (setq org-habit-graph-column 60))
 
   (defun org-agenda-setup ()
     (setq org-agenda-start-with-log-mode t)
@@ -47,6 +53,10 @@
 
 
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
+  (advice-add 'org-deadline       :after (advice-helper #'org-save-all-org-buffers))
+  (advice-add 'org-schedule       :after (advice-helper #'org-save-all-org-buffers))
+  (advice-add 'org-store-log-note :after (advice-helper #'org-save-all-org-buffers))
+  (advice-add 'org-todo           :after (advice-helper #'org-save-all-org-buffers))
 
   (use-package visual-fill-column
     :hook (org-mode . org-mode-visual-fill)
