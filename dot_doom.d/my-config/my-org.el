@@ -19,6 +19,8 @@
   (defun org-habit-setup ()
     (require 'org-habit)
     (add-to-list 'org-modules 'org-habit)
+    (setq org-habit-preceding-days 7)
+    (setq org-habit-show-all-today t)
     (setq org-habit-graph-column 60))
 
   (defun org-agenda-setup ()
