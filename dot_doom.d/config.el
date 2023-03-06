@@ -83,7 +83,6 @@
 (require 'my-ui)
 (require 'my-org)
 (require 'my-vterm)
-(require 'my-org-roam)
 (require 'my-keybindings)
 
 (setq system-time-locale "C")
@@ -94,6 +93,3 @@
     "Search for a file in `chezmoi doom config files'."
     (interactive)
     (doom-project-find-file "~/.local/share/chezmoi/dot_doom.d")))
-
-(after! 'lsp'
-  (setq lsp-solargraph-use-bundler 't))
