@@ -20,6 +20,9 @@
       - curl
       - libtool
       - libtool-bin
+      - postgresql-client
+      - libpq5
+      - libpq-dev
     state: present
 
 - name: Debian - Install Snap packages
