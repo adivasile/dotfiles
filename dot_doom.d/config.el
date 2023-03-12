@@ -93,3 +93,17 @@
     "Search for a file in `chezmoi doom config files'."
     (interactive)
     (doom-project-find-file "~/.local/share/chezmoi/dot_doom.d")))
+
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-markup-indent-offset 2)
+)
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-hook 'web-mode-hook  'my-web-mode-hook)
+
+(with-eval-after-load 'company
+  (define-key company-active-map (kbd "<return>") nil)
+  (define-key company-active-map (kbd "RET") nil)
+  (define-key company-active-map (kbd "C-n") #'company-complete-selection))
