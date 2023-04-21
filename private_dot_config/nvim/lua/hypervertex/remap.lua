@@ -30,3 +30,5 @@ vim.keymap.set("i", "nn", "<ESC>")
 
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<M-x>", ":")
+
+vim.keymap.set("n", "<CR>", ":nohl<CR>")

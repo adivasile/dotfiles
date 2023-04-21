@@ -11,9 +11,12 @@ return require('packer').startup(function(use)
 		requires = { {'nvim-lua/plenary.nvim'} }
 	}
 
+    -- Themes
 	use({ 'rose-pine/neovim', as = 'rose-pine', })
 	use({ 'dracula/vim', as = 'dracula', })
+    use 'folke/tokyonight.nvim'
 
+    -- Treesitter stuff
 	use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
 	use('nvim-treesitter/playground')
 	use('mbbill/undotree')
@@ -61,4 +64,10 @@ return require('packer').startup(function(use)
             }
         end
     }
+
+    use {
+        "windwp/nvim-autopairs",
+        config = function() require("nvim-autopairs").setup {} end
+    }
+
 end)
