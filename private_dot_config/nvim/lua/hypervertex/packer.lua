@@ -48,6 +48,7 @@ return require('packer').startup(function(use)
     use('tpope/vim-surround')
     use('tpope/vim-repeat')
     use('tpope/vim-commentary')
+    use('tpope/vim-rails')
     use('itchyny/lightline.vim')
     use('christoomey/vim-tmux-navigator')
     use('tmux-plugins/vim-tmux-focus-events')
@@ -68,6 +69,11 @@ return require('packer').startup(function(use)
     use {
         "windwp/nvim-autopairs",
         config = function() require("nvim-autopairs").setup {} end
+    }
+
+    use {
+        "editorconfig/editorconfig-vim",
+        config = function() require("editorconfig-vim").setup {} end
     }
 
 end)

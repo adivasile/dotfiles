@@ -49,5 +49,10 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
+(package! denote)
 (package! visual-fill-column)
 (package! web-mode)
+(package! all-the-icons)
+(package! yaml)
+(package! treesit-auto)
+(package! zig-mode)

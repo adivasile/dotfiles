@@ -13,20 +13,20 @@
 
 - name: Download ruby-install
   command:
-    cmd: wget https://github.com/postmodern/ruby-install/archive/v0.8.5.tar.gz -O ruby-install-0.8.5.tar.gz 
+    cmd: wget https://github.com/postmodern/ruby-install/releases/download/v0.9.0/ruby-install-0.9.0.tar.gz
     chdir: /tmp/
-    creates: /tmp/ruby-install-0.8.5.tar.gz 
+    creates: /tmp/ruby-install-0.9.0.tar.gz 
   when: exists_ruby_install.rc != 0
 
 - name: Untar ruby-install
   unarchive:
-    src: /tmp/ruby-install-0.8.5.tar.gz 
+    src: /tmp/ruby-install-0.9.0.tar.gz 
     dest: /tmp
   when: exists_ruby_install.rc != 0
 
 - name: Run 'install' target as root
   make:
-    chdir: /tmp/ruby-install-0.8.5
+    chdir: /tmp/ruby-install-0.9.0
     target: install
   become: yes
   when: exists_ruby_install.rc != 0
