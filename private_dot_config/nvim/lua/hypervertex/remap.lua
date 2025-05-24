@@ -28,6 +28,9 @@ vim.keymap.set("n", "E", "$")
 vim.keymap.set("n", "B", "^")
 vim.keymap.set("i", "nn", "<ESC>")
 
+vim.keymap.set("v", "E", "$")
+vim.keymap.set("v", "B", "^")
+
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<M-x>", ":")
 

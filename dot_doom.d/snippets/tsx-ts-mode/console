@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: console
+# key: cl
+# expand-env: ((yas-indent-line 'auto))
+# --
+console.log('${1:var}', $1);

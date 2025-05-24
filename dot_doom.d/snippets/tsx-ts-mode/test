@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: test
+# key: <sn
+# --
+
+
+console.log('works!!!')

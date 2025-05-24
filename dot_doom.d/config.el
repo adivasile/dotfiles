@@ -3,7 +3,6 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 (setq user-full-name "Adrian Vasile"
@@ -84,9 +83,20 @@
 (require 'my-org)
 (require 'my-vterm)
 (require 'my-keybindings)
+(require 'my-projects)
+(require 'my-ruby)
+(require 'my-js)
+(require 'my-company)
+(require 'my-utils)
+(require 'my-treesitter)
 
 (setq system-time-locale "C")
 (setq projectile-project-search-path '("~/Code/" . 1))
+
+(setq read-process-output-max (* 4 1024 1024)) ;; 4MB instead of 10MB
+(setq gc-cons-threshold 100000000) ;; Lower than 200MB for better interactive performance
+(setq gc-cons-percentage 0.1)
+(setq auto-window-vscroll nil) ;; Faster scrolling
 
 (eval-after-load 'doom'
   (defun doom/find-file-in-private-config ()
@@ -94,16 +104,18 @@
     (interactive)
     (doom-project-find-file "~/.local/share/chezmoi/dot_doom.d")))
 
-(defun my-web-mode-hook ()
-  "Hooks for Web mode."
-  (setq web-mode-markup-indent-offset 2)
-)
+(modify-syntax-entry ?_ "w")
 
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-hook 'web-mode-hook  'my-web-mode-hook)
+(editorconfig-mode 1)
 
-(with-eval-after-load 'company
-  (define-key company-active-map (kbd "<return>") nil)
-  (define-key company-active-map (kbd "RET") nil)
-  (define-key company-active-map (kbd "C-n") #'company-complete-selection))
+(defun read-db-file ()
+  (interactive)
+  (f-read-text (concat (projectile-project-root) "config/database.yml")))
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode)
+  :bind (:map flycheck-mode-map
+              ("M-n" . flycheck-next-error) ; optional but recommended error navigation
+              ("M-p" . flycheck-previous-error)))
+

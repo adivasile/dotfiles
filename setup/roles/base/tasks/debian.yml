@@ -23,6 +23,8 @@
       - postgresql-client
       - libpq5
       - libpq-dev
+      - exa
+      - blueman
     state: present
 
 - name: Debian - Install Snap packages
