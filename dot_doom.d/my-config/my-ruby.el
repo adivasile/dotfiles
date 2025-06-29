@@ -84,3 +84,24 @@
         (vterm-send-return))
       (message "Running: %s" rspec-command))))
 
+
+(defvar my/current-chruby-project nil)
+
+(defun my/auto-chruby-use-corresponding ()
+  "Run `chruby-use-corresponding` only when project context changes."
+  (let* ((proj-root (ignore-errors (projectile-project-root)))
+         (ruby-file (and proj-root
+                         (locate-dominating-file proj-root ".ruby-version"))))
+    (when (and ruby-file
+               (not (equal proj-root my/current-chruby-project)))
+      (setq my/current-chruby-project proj-root)
+      (message "[chruby-debug] Switching Ruby for: %s" proj-root)
+      (chruby-use-corresponding))))
+
+(defun my/after-persp-activate (&rest _)
+  "Run after workspace is fully activated."
+  (run-at-time
+   "0.1 sec" nil ;; optional, only if buffer is not set by the time this runs
+   #'my/auto-chruby-use-corresponding))
+
+(advice-add 'persp-activate :after #'my/after-persp-activate)
